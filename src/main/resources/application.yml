@@ -1,0 +1,40 @@
+server:
+  port: 9999
+spring:
+  application:
+    name: jts-mock-server
+  mvc:
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
+  thymeleaf:
+    cache: true
+    suffix: ".html"
+    prefix: classpath:/templates/
+    mode: HTML5
+    encoding: UTF-8
+    enabled: true
+    check-template: true
+    check-template-location: true
+    content-type: text/html
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/mockserverdb?serverTimezone=UTC&characterEncoding=utf-8&useSSL=false
+    username: root
+    password: 123456
+  druid:
+    initial-size: 2
+    max-active: 30
+    min-idle: 2
+    max-wait: 1234
+    pool-prepared-statements: true
+    max-pool-prepared-statement-per-connection-size: 5
+    validation-query: select 1
+    validation-query-timeout: 1
+    test-on-borrow: true
+    test-on-return: true
+    test-while-idle: true
+    time-between-eviction-runs-millis: 10000
+    min-evictable-idle-time-millis: 30001
+    async-close-connection-enable: true
