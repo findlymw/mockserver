@@ -8,11 +8,13 @@ import java.util.List;
 @Mapper
 public interface ApiGroupMapper {
     @Select("select * from ms_apigroup")
-    public List<ApiGroup> selectApiGroupList();
+    List<ApiGroup> selectApiGroupList();
+    @Select("select count(id) from ms_apigroup where groupName = #{groupName}")
+    long selectApiGroupNameCount(ApiGroup apiGroup);
     @Insert("insert into ms_apigroup (groupName) values (#{groupName})")
-    public int addApiGroup(ApiGroup apiGroup);
+    int addApiGroup(ApiGroup apiGroup);
     @Update("update ms_apigroup set groupName = #{groupName} where id = #{id}")
-    public int updateApiGroupById(ApiGroup apiGroup);
+    int updateApiGroupById(ApiGroup apiGroup);
     @Delete("delete from ms_apigroup where id = #{id}")
-    public int deleteApiGroupById(ApiGroup apiGroup);
+    int deleteApiGroupById(ApiGroup apiGroup);
 }

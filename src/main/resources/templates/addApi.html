@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="inc/header :: head"></head>
+<body class="easyui-layout">
+<style>
+    #addNewApiPanel{
+        font-size: 16px;}
+    .addApiForm{margin: 10px;}
+</style>
+<div data-options="region:'north',border:false" style="height:60px;">
+    <h1>Mock Server
+        <a href="/index.html" class="easyui-linkbutton" data-options="plain:true" iconCls="icon-back">Home</a>
+        <a href="javascript:;" class="easyui-linkbutton" data-options="plain:true" iconCls="icon-save">Save</a>
+    </h1>
+</div>
+
+<div data-options="region:'south',border:false" style="height:30px;padding:10px;text-align: center;">
+    2018 &copy; Mock Server v1.0.0
+</div>
+<div id="addNewApiPanel" data-options="region:'center',title:'Add New API'">
+        <div class="addApiForm">
+            <label>API Group:</label>
+            <span id="apiGroupSelect"></span>
+        </div>
+        <div class="addApiForm">
+            <label>Request Method:</label>
+            <span id="reqMethodSelect"></span>
+        </div>
+        <div class="addApiForm">
+            <label>Params Type of Input:</label>
+            <span id="inputTypeSelect"></span>
+        </div>
+        <div class="addApiForm">
+            <label>Request Content Type:</label>
+            <span id="reqContentTypeSelect"></span>
+        </div>
+        <div class="addApiForm">
+            <label>Response Content Type:</label>
+            <span id="respContentTypeSelect"></span>
+        </div>
+        <div class="addApiForm">
+            <label for="Restful">Restful:</label>
+            <input class="easyui-validatebox" type="text" style="width: 60%" placeholder="/xxxx/xxx/xxx/xxx/xxx" name="Restful" data-options="required:true" />
+        </div>
+        <div class="addApiForm">
+            <label for="Output">Output:</label><br/>
+            <textarea class="easyui-validatebox" style="width: 60%;height: 200px;" name="Output"  placeholder="{}" data-options="required:true"></textarea>
+        </div>
+</div>
+
+<script type="text/javascript" th:src="@{/js/project/common.js}"></script>
+<script type="text/javascript" th:src="@{/js/project/addApi.js}"></script>
+</body>
+</html>

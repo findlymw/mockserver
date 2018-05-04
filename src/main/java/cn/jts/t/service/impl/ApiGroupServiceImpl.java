@@ -22,6 +22,11 @@ public class ApiGroupServiceImpl implements ApiGroupService {
     }
 
     @Override
+    public long selectApiGroupNameCount(ApiGroup apiGroup) {
+        return apiGroupMapper.selectApiGroupNameCount(apiGroup);
+    }
+
+    @Override
     public int updateApiGroupById(ApiGroup apiGroup) {
         return apiGroupMapper.updateApiGroupById(apiGroup);
     }

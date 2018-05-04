@@ -14,4 +14,10 @@ public class PageController {
 
         return "index";
     }
+
+    @RequestMapping("/addapi.html")
+    public String addapi(){
+
+        return "addApi";
+    }
 }

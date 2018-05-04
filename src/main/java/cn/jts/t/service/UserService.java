@@ -5,15 +5,15 @@ import cn.jts.t.entity.User;
 import java.util.List;
 
 public interface UserService {
-    public int save(User user);
+    int save(User user);
 
-    public User get(int id);
+    User get(int id);
 
-    public List<User> getAll();
+    List<User> getAll();
 
-    public int delUser(int id);
+    int delUser(int id);
 
-    public User getUserByUP(User user);
+    User getUserByUP(User user);
 
-    public int updatePasswordByUserId(User user);
+    int updatePasswordByUserId(User user);
 }

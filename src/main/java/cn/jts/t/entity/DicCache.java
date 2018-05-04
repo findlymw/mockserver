@@ -11,7 +11,7 @@ public class DicCache {
     private List<InputType>  inputTypes;
     private List<Method> methods;
     private List<Unit> units;
-
+    private List<ApiGroup> apiGroups;
 
     public DicCache(DicService dicService){
         try{
@@ -23,6 +23,14 @@ public class DicCache {
         }catch(Exception e){
             throw new RuntimeException("Exception occured in creating singleton instance");
         }
+    }
+
+    public List<ApiGroup> getApiGroups() {
+        return apiGroups;
+    }
+
+    public void setApiGroups(List<ApiGroup> apiGroups) {
+        this.apiGroups = apiGroups;
     }
 
     public List<ColumType> getColumTypes() {

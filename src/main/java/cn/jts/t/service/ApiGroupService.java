@@ -5,8 +5,9 @@ import cn.jts.t.entity.ApiGroup;
 import java.util.List;
 
 public interface ApiGroupService {
-    public List<ApiGroup> selectApiGroupList();
-    public int addApiGroup(ApiGroup apiGroup);
-    public int updateApiGroupById(ApiGroup apiGroup);
-    public int deleteApiGroupById(ApiGroup apiGroup);
+    List<ApiGroup> selectApiGroupList();
+    int addApiGroup(ApiGroup apiGroup);
+    long selectApiGroupNameCount(ApiGroup apiGroup);
+    int updateApiGroupById(ApiGroup apiGroup);
+    int deleteApiGroupById(ApiGroup apiGroup);
 }

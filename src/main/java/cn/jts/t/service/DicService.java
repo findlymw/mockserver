@@ -5,9 +5,9 @@ import cn.jts.t.entity.*;
 import java.util.List;
 
 public interface DicService {
-    public List<ColumType> columTypes();
-    public List<ContentType> contentTypes();
-    public List<InputType> inputTypes();
-    public List<Method>  methods();
-    public List<Unit> units();
+    List<ColumType> columTypes();
+    List<ContentType> contentTypes();
+    List<InputType> inputTypes();
+    List<Method>  methods();
+    List<Unit> units();
 }

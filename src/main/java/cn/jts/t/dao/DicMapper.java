@@ -9,19 +9,19 @@ import java.util.List;
 @Mapper
 public interface DicMapper {
     @Select("select * from ms_method")
-    public List<Method> selectMethodList();
+    List<Method> selectMethodList();
 
     @Select("select * from ms_inputtype")
-    public List<InputType> selectInputTypeList();
+    List<InputType> selectInputTypeList();
 
     @Select("select * from ms_contenttype")
-    public List<ContentType> selectContentTypeList();
+    List<ContentType> selectContentTypeList();
 
     @Select("select * from ms_unit")
-    public List<Unit> selectUnitList();
+    List<Unit> selectUnitList();
 
     @Select("select * from ms_columtype")
-    public List<ColumType> selectColumTypeList();
+    List<ColumType> selectColumTypeList();
 
 
 }
