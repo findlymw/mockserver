@@ -34,8 +34,42 @@ public class RestfulController {
             result.setSuccess(false);
             result.setDesc("Add Api Input object is null");
         }else{
-            result.setSuccess(true);
-            result.setData(addApiInput);
+            if(addApiInput.getApiGroup() < 0){
+                result.setSuccess(false);
+                result.setDesc("ApiGroup Failed");
+            }else if(null == addApiInput.getRestful()
+                    || "".equals(addApiInput.getRestful())
+                    ){
+                result.setSuccess(false);
+                result.setDesc("Restful is null");
+            }else if(addApiInput.getReqContentType() < 0){
+                result.setSuccess(false);
+                result.setDesc("ReqContentType Failed");
+            }else if(addApiInput.getRespContentType() < 0){
+                result.setSuccess(false);
+                result.setDesc("RespContentType Failed");
+            }else if(addApiInput.getOutput() == null
+                    || "".equals(addApiInput.getOutput())
+                    || "{}".equals(addApiInput.getOutput())
+                    ){
+                result.setSuccess(false);
+                result.setDesc("Output Failed ,is empty or {} ");
+            }else if(addApiInput.getOutputFail() == null
+                    || "".equals(addApiInput.getOutputFail())
+                    || "{}".equals(addApiInput.getOutputFail())
+                    ){
+                result.setSuccess(false);
+                result.setDesc("OutputFail Failed ,is empty or {} ");
+            }else if(addApiInput.getHeadersFlag() < 0){
+                result.setSuccess(false);
+                result.setDesc("HeadersFlag Failed");
+            }else if(addApiInput.getBodyFlag() < 0){
+                result.setSuccess(false);
+                result.setDesc("BodyFlag Failed");
+            }else{
+                result.setSuccess(true);
+                result.setData(addApiInput);
+            }
         }
         return result;
     }
