@@ -13,8 +13,37 @@ public class AddApiInput {
     private String output;
     private String outputFail;
 
+    private String inputParamDesc;
+    private String outPutDesc;
+    private String outPutFailDesc;
+
     private InputParam[] headParams;
     private InputParam[] bodyParams;
+
+
+    public String getInputParamDesc() {
+        return inputParamDesc;
+    }
+
+    public void setInputParamDesc(String inputParamDesc) {
+        this.inputParamDesc = inputParamDesc;
+    }
+
+    public String getOutPutDesc() {
+        return outPutDesc;
+    }
+
+    public void setOutPutDesc(String outPutDesc) {
+        this.outPutDesc = outPutDesc;
+    }
+
+    public String getOutPutFailDesc() {
+        return outPutFailDesc;
+    }
+
+    public void setOutPutFailDesc(String outPutFailDesc) {
+        this.outPutFailDesc = outPutFailDesc;
+    }
 
     public String getRestful() {
         return restful;

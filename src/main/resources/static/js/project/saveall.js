@@ -36,6 +36,9 @@ $(document).ready(function(){
 
         obj.headersFlag = $("input[name='headersFlag']:checked").val();
         obj.bodyFlag = $("input[name='bodyFlag']:checked").val();
+        obj.inputParamDesc = $('#inputParamDesc').val();
+        obj.outPutDesc = $('#outPutDesc').val();
+        obj.outPutFailDesc = $('#outPutFailDesc').val();
         obj.headParams = [];
         obj.bodyParams = [];
         if(obj.headersFlag && obj.headersFlag == 1){
@@ -104,6 +107,12 @@ $(document).ready(function(){
                 $.messager.alert('Warning','Sorry,您未选中 是否有headers类型参数 的选项，它在入参选项卡中，请重新选择。');
             }else if(!obj.bodyFlag){
                 $.messager.alert('Warning','Sorry,您未选中 是否有Body类型参数 的选项，它在入参选项卡中，请重新选择。');
+            }else if(!obj.inputParamDesc){
+                $.messager.alert('Warning','Sorry,您未填写入参的字段详细说明，它在入参选项卡中，请重新填写。');
+            }else if(!obj.outPutDesc){
+                $.messager.alert('Warning','Sorry,您未填写正确出参的字段详细说明，它在正确出参选项卡中，请重新填写。');
+            }else if(!obj.outPutFailDesc){
+                $.messager.alert('Warning','Sorry,您未填写错误出参的字段详细说明，它在错误出参选项卡中，请重新填写。');
             }else if(obj.headersFlag == '0' && obj.bodyFlag == '0'){
                 console.log('no input params');
                 /**********ok*********/

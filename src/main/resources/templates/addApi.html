@@ -51,39 +51,69 @@
 
         </div>
         <div title="入参" style="padding:10px">
-            <div class="addApiForm" style="border-bottom: 1px solid #efefef;padding: 5px;">
-                <label>是否有headers类型参数:</label>
-                <span class="radioSpan">
-                    <input type="radio" name="headersFlag" checked="checked" value="0">否</input>
-                    <input type="radio" name="headersFlag" value="1">是</input>
-                </span>
-                <div id="headersParams"></div>
-                <div id="addHeadersParamBtn" style="display: none"><a href="javascript:addHeaderParam();" class="easyui-linkbutton" data-options="plain:true" iconCls="icon-add"></a></div>
-            </div>
+            <table style="width: 100%">
+                <tr>
+                    <td width="80%" style="vertical-align: top;">
+                        <div class="addApiForm" style="border-bottom: 1px solid #efefef;padding: 5px;">
+                            <label>是否有headers类型参数:</label>
+                            <span class="radioSpan">
+                            <input type="radio" name="headersFlag" checked="checked" value="0">否</input>
+                            <input type="radio" name="headersFlag" value="1">是</input>
+                            </span>
+                            <div id="headersParams"></div>
+                            <div id="addHeadersParamBtn" style="display: none"><a href="javascript:addHeaderParam();" class="easyui-linkbutton" data-options="plain:true" iconCls="icon-add"></a></div>
+                        </div>
 
-            <div class="addApiForm" style="border-bottom: 1px solid #efefef;padding: 5px;">
-                <label>是否有Body类型参数:</label>
-                <span class="radioSpan">
+                        <div class="addApiForm" style="border-bottom: 1px solid #efefef;padding: 5px;">
+                            <label>是否有Body类型参数:</label>
+                            <span class="radioSpan">
                     <input type="radio" name="bodyFlag" checked="checked" value="0">否</input>
-                    <input type="radio" name="bodyFlag" value="1">是</input>
+                                <input type="radio" name="bodyFlag" value="1">是</input>
                 </span>
-                <div id="bodyParamsType" style="margin: 20px;"></div>
-                <div id="bodyParams"></div>
-                <div id="addBodyParamBtn" style="display: none"><a href="javascript:addBodyParam();" class="easyui-linkbutton" data-options="plain:true" iconCls="icon-add"></a></div>
-                <div id="bodyRawParams" style="display: none">
-                    <div id="jsoneditorRaw" style="width: 100%; height: 500px;"></div>
-                </div>
-            </div>
+                            <div id="bodyParamsType" style="margin: 20px;"></div>
+                            <div id="bodyParams"></div>
+                            <div id="addBodyParamBtn" style="display: none"><a href="javascript:addBodyParam();" class="easyui-linkbutton" data-options="plain:true" iconCls="icon-add"></a></div>
+                            <div id="bodyRawParams" style="display: none">
+                                <div id="jsoneditorRaw" style="width: 100%; height: 500px;"></div>
+                            </div>
+                        </div>
+                    </td>
+                    <td style="vertical-align: top;">
+                        <label>参数说明</label><br/>
+                        <textarea id="inputParamDesc" placeholder="输入各类参数的详细说明" style="width: 100%;height: 500px;"></textarea>
+                    </td>
+                </tr>
+            </table>
         </div>
         <div title="正确出参"  style="padding:10px">
-            <div class="addApiForm">
-                <div id="jsoneditorSuccess" style="width: 100%; height: 500px;"></div>
-            </div>
+            <table style="width: 100%">
+                <tr>
+                    <td width="80%" style="vertical-align: top;">
+                        <div class="addApiForm">
+                            <div id="jsoneditorSuccess" style="width: 100%; height: 500px;"></div>
+                        </div>
+                    </td>
+                    <td style="vertical-align: top;">
+                        <label>参数说明</label><br/>
+                        <textarea id="outPutDesc" placeholder="输入各类参数的详细说明" style="width: 100%;height: 500px;"></textarea>
+                    </td>
+                </tr>
+            </table>
         </div>
         <div title="错误出参"  style="padding:10px">
-            <div class="addApiForm">
-                <div id="jsoneditorFail" style="width: 100%; height: 500px;"></div>
-            </div>
+            <table style="width: 100%">
+                <tr>
+                    <td width="80%" style="vertical-align: top;">
+                        <div class="addApiForm">
+                            <div id="jsoneditorFail" style="width: 100%; height: 500px;"></div>
+                        </div>
+                    </td>
+                    <td style="vertical-align: top;">
+                        <label>参数说明</label><br/>
+                        <textarea id="outPutFailDesc" placeholder="输入各类参数的详细说明" style="width: 100%;height: 500px;"></textarea>
+                    </td>
+                </tr>
+            </table>
         </div>
     </div>
 
