@@ -36,9 +36,9 @@ $(document).ready(function(){
 
         obj.headersFlag = $("input[name='headersFlag']:checked").val();
         obj.bodyFlag = $("input[name='bodyFlag']:checked").val();
-        obj.inputParamDesc = $('#inputParamDesc').val();
-        obj.outPutDesc = $('#outPutDesc').val();
-        obj.outPutFailDesc = $('#outPutFailDesc').val();
+        obj.inputParamDesc = simplemdeInput.value();
+        obj.outPutDesc = simplemdeOutput.value();
+        obj.outPutFailDesc = simplemdeOutputFail.value();
         obj.headParams = [];
         obj.bodyParams = [];
         if(obj.headersFlag && obj.headersFlag == 1){

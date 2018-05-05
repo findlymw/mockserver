@@ -10,6 +10,10 @@ var editorSuccess;
 var editorFail;
 var editorRaw;
 
+var simplemdeInput;
+var simplemdeOutput;
+var simplemdeOutputFail;
+
 function inputTypeChange(obj){
     var select = $(obj);
     var val = select.val();
@@ -270,6 +274,8 @@ $(document).ready(function(){
     editorRaw = new JSONEditor(containerRaw, options);
     editorRaw.set({});
 
-
+    simplemdeInput = new SimpleMDE({ element: document.getElementById("inputParamDesc") });
+    simplemdeOutput = new SimpleMDE({ element: document.getElementById("outPutDesc") });
+    simplemdeOutputFail = new SimpleMDE({ element: document.getElementById("outPutFailDesc") });
 
 });
