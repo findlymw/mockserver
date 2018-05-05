@@ -2,6 +2,27 @@ $(document).ready(function(){
 
     function exeSave(obj){
         console.log(JSON.stringify(obj));
+        $.ajax({
+            type: 'POST',
+            dataType : 'json',
+            cache:false,
+            async:false,
+            contentType: "application/json; charset=utf-8",
+            url: '/restful/addApi',
+            data: JSON.stringify(obj),
+            beforeSend: ajaxLoading,
+            success: function(json) {
+                //console.log(JSON.stringify(json));
+                if (json) {
+
+                    console.log(JSON.stringify(json));
+
+                    ajaxLoadEnd();
+                }else {
+                    $.messager.alert('Warning', '加载字典数据失败，请刷新页面重试', 'warning');
+                }
+            }
+        });
     }
 
 
@@ -42,8 +63,8 @@ $(document).ready(function(){
                         var p = $(this);
                         var bodyParam = new Object();
                         bodyParam.key = p.find('input').val();
-                        bodyParam.paramType = p.find('select').eq(0).val();
-                        bodyParam.isMust = p.find('select').eq(1).val();
+                        bodyParam.paramType = p.find('select:checked').eq(0).val();
+                        bodyParam.isMust = p.find('select:checked').eq(1).val();
                         obj.bodyParams.push(bodyParam);
                         console.log(bodyParam.key + bodyParam.paramType + bodyParam.isMust);
                     });
@@ -85,6 +106,8 @@ $(document).ready(function(){
                 $.messager.alert('Warning','Sorry,您未选中 是否有Body类型参数 的选项，它在入参选项卡中，请重新选择。');
             }else if(obj.headersFlag == '0' && obj.bodyFlag == '0'){
                 console.log('no input params');
+                /**********ok*********/
+                exeSave(obj);
             }else if(obj.bodyFlag == '0' && obj.headersFlag == '1'){
                 var n=0;
                     if(obj.headParams && obj.headParams.length > 0){

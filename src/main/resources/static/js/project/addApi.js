@@ -70,7 +70,7 @@ function addHeaderParam(){
         var randomId = ~~(Math.random()*100000);
         $('#headersParams').append('<p class="headerParamsP"><span onclick="delHeaderParam(this);" title="删除" style="cursor:pointer;margin-right:20px;color: red;"> X </span><b>Key: </b>'+
             '<span><input id="headerKey'+randomId+'" type="text" maxlength="50"/></span>' +
-            '  <b>参数类型: </b><span id="headersParamType'+randomId+'"></span><b>是否必填: </b><span><select id="headerKeyMust"'+randomId+'><option>是</option><option>否</option></select></span></p>');
+            '  <b>参数类型: </b><span id="headersParamType'+randomId+'"></span><b>是否必填: </b><span><select id="headerKeyMust"'+randomId+'><option value="1">是</option><option value="0">否</option></select></span></p>');
         $('#headersParamType'+randomId).html(getSelect('columnType'+randomId,columnTypes.options));
         headerParamsCount += 1
         console.log('headerParamsCount : ' + headerParamsCount);
