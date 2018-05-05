@@ -5,6 +5,30 @@ var units = new Object();
 var contentTypes = new Object();
 var inputTypes = new Object();
 
+
+var editorSuccess;
+var editorFail;
+var editorRaw;
+
+function inputTypeChange(obj){
+    var select = $(obj);
+    var val = select.val();
+    $('#bodyRawParams').hide();
+    if(val == 1 || val == 3){
+        $('#bodyRawParams').hide();
+
+        $('#bodyParams').show()
+        $('#addBodyParamBtn').show();
+
+    }else if(val == 2){
+        $('#bodyParams').hide();
+        $('#addBodyParamBtn').hide();
+        $('#bodyRawParams').show();
+    }
+    console.log('input select : ' + val);
+}
+
+
 function getSelect(name,options){
     var select = '<select name="'+name+'">';
     select += options;
@@ -12,13 +36,61 @@ function getSelect(name,options){
     return select;
 }
 
-function addInputParam(id){
-    var str = '<div class="addApiForm" style="padding:5px;border-bottom: 1px solid #efefef">\n' +
-        '<label>Params Type of Input:</label>\n' +
-        '<span id="inputTypeSelect'+id+'"></span>\n' +
+function getInputTypeSelect(name,options){
+    var select = '<select onchange="inputTypeChange(this);" name="'+name+'">';
+    select += options;
+    select += '</select>';
+    return select;
+}
+
+function addInputParam(who){
+    var str = '<div>' +
+        '<b>Params Type of Input:</b>\n' +
+        '<span id="inputTypeSelect"></span>\n' +
         '</div>';
-    $('#inputParams').append(str);
-    $('#inputTypeSelect').html(getSelect('inputType',inputTypes.options));
+    $(who).html(str);
+    $('#inputTypeSelect').html(getInputTypeSelect('inputTypeSelect',inputTypes.options));
+}
+
+var headerParamsCount = 0;
+var maxHeaderParamsCount = 20;
+var bodyParamsCount = 0;
+var maxBodyParamsCount = 20;
+
+function delHeaderParam(obj){
+    $(obj).parent().remove();
+    headerParamsCount -= 1;
+}
+function delBodyParam(obj){
+    $(obj).parent().remove();
+    bodyParamsCount -= 1;
+}
+function addHeaderParam(){
+    if(headerParamsCount<maxHeaderParamsCount){
+        var randomId = ~~(Math.random()*100000);
+        $('#headersParams').append('<p class="headerParamsP"><span onclick="delHeaderParam(this);" title="删除" style="cursor:pointer;margin-right:20px;color: red;"> X </span><b>Key: </b>'+
+            '<span><input id="headerKey'+randomId+'" type="text" maxlength="50"/></span>' +
+            '  <b>参数类型: </b><span id="headersParamType'+randomId+'"></span><b>是否必填: </b><span><select id="headerKeyMust"'+randomId+'><option>是</option><option>否</option></select></span></p>');
+        $('#headersParamType'+randomId).html(getSelect('columnType'+randomId,columnTypes.options));
+        headerParamsCount += 1
+        console.log('headerParamsCount : ' + headerParamsCount);
+    }else{
+        $.messager.alert('Warning','Header的参数最多能够添加到'+maxHeaderParamsCount+'个。');
+    }
+}
+
+function addBodyParam(){
+    if(bodyParamsCount<maxBodyParamsCount){
+        var randomId = ~~(Math.random()*100000);
+        $('#bodyParams').append('<p class="bodyParamsP"><span onclick="delBodyParam(this);" title="删除" style="cursor:pointer;margin-right:20px;color: red;"> X </span><b>Key: </b>'+
+            '<span><input id="bodyKey'+randomId+'" type="text" maxlength="50"/></span>' +
+            '  <b>参数类型: </b><span id="bodyParamType'+randomId+'"></span><b>是否必填: </b><span><select id="bodyKeyMust"'+randomId+'><option>是</option><option>否</option></select></span></p>');
+        $('#bodyParamType'+randomId).html(getSelect('bodyColumnType'+randomId,columnTypes.options));
+        bodyParamsCount += 1
+        console.log('bodyParamsCount : ' + bodyParamsCount);
+    }else{
+        $.messager.alert('Warning','Body的参数最多能够添加到'+maxBodyParamsCount+'个。');
+    }
 }
 
 $(document).ready(function(){
@@ -117,6 +189,50 @@ $(document).ready(function(){
 
 
 
+    $("input[name='headersFlag']").on('click',function(){
+        var headers = $("input[name='headersFlag']:checked").val();
+        if(headers && headers == 0){
+            console.log('select headers : no');
+            $('#headersParams').hide();
+            $('#addHeadersParamBtn').hide();
+        }else if(headers == 1){
+            console.log('select headers : yes');
+            $('#addHeadersParamBtn').show();
+            var headersParamsContent = $('#headersParams');
+            if(headersParamsContent && headersParamsContent.html().length <= 0){
+                addHeaderParam();
+            }
+
+            $('#headersParams').show();
+
+        }
+    });
+
+    $("input[name='bodyFlag']").on('click',function(){
+        var body = $("input[name='bodyFlag']:checked").val();
+        if(body && body == 0){
+            console.log('select body : no');
+            $('#bodyParamsType').hide();
+            $('#bodyParams').hide();
+            $('#addBodyParamBtn').hide();
+            $('#bodyRawParams').hide();
+        }else if(body == 1){
+            console.log('select body : yes');
+            addInputParam('#bodyParamsType');
+            $('#bodyParamsType').show();
+
+            //隐藏raw的编辑器
+            $('#bodyRawParams').hide();
+            //显示添加按钮和添加区域
+            $('#bodyParams').show()
+            $('#addBodyParamBtn').show();
+        }
+    });
+
+
+
+
+
 
 
     // create the editor
@@ -132,13 +248,13 @@ $(document).ready(function(){
             console.log('Mode switched from', oldMode, 'to', newMode);
         }
     };
-    var editor = new JSONEditor(container, options);
+    editorSuccess = new JSONEditor(container, options);
 
     // set json
     var json = {
 
     };
-    editor.set(json);
+    editorSuccess.set(json);
 
     // get json
     //var json = editor.get();
@@ -147,7 +263,13 @@ $(document).ready(function(){
 
 
     var containerFail = document.getElementById("jsoneditorFail");
-    var editorFail = new JSONEditor(containerFail, options);
+    editorFail = new JSONEditor(containerFail, options);
     editorFail.set({});
+
+    var containerRaw = document.getElementById("jsoneditorRaw");
+    editorRaw = new JSONEditor(containerRaw, options);
+    editorRaw.set({});
+
+
 
 });
