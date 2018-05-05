@@ -1,18 +1,31 @@
+var columnTypes = new Object();
+var apiGroups = new Object();
+var methods = new Object();
+var units = new Object();
+var contentTypes = new Object();
+var inputTypes = new Object();
+
+function getSelect(name,options){
+    var select = '<select name="'+name+'">';
+    select += options;
+    select += '</select>';
+    return select;
+}
+
+function addInputParam(id){
+    var str = '<div class="addApiForm" style="padding:5px;border-bottom: 1px solid #efefef">\n' +
+        '<label>Params Type of Input:</label>\n' +
+        '<span id="inputTypeSelect'+id+'"></span>\n' +
+        '</div>';
+    $('#inputParams').append(str);
+    $('#inputTypeSelect').html(getSelect('inputType',inputTypes.options));
+}
+
 $(document).ready(function(){
 
-    function getSelect(name,options){
-        var select = '<select name="'+name+'">';
-        select += options;
-        select += '</select>';
-        return select;
-    }
 
-    var columnTypes = new Object();
-    var apiGroups = new Object();
-    var methods = new Object();
-    var units = new Object();
-    var contentTypes = new Object();
-    var inputTypes = new Object();
+
+
 
     $.ajax({
             type: 'GET',
@@ -91,7 +104,7 @@ $(document).ready(function(){
 
                     $('#apiGroupSelect').html(getSelect('apiGroup',apiGroups.options));
                     $('#reqMethodSelect').html(getSelect('method',methods.options));
-                    $('#inputTypeSelect').html(getSelect('inputType',inputTypes.options));
+
                     $('#reqContentTypeSelect').html(getSelect('reqContentType',contentTypes.options));
                     $('#respContentTypeSelect').html(getSelect('respContentType',contentTypes.options));
 
@@ -101,4 +114,40 @@ $(document).ready(function(){
                 }
             }
         });
+
+
+
+
+
+    // create the editor
+    var container = document.getElementById("jsoneditorSuccess");
+    var options = {
+        //mode: 'view', //只读
+        mode: 'code',
+        modes: ['code', 'form', 'text', 'tree', 'view'], // allowed modes
+        onError: function (err) {
+            alert(err.toString());
+        },
+        onModeChange: function (newMode, oldMode) {
+            console.log('Mode switched from', oldMode, 'to', newMode);
+        }
+    };
+    var editor = new JSONEditor(container, options);
+
+    // set json
+    var json = {
+
+    };
+    editor.set(json);
+
+    // get json
+    //var json = editor.get();
+
+
+
+
+    var containerFail = document.getElementById("jsoneditorFail");
+    var editorFail = new JSONEditor(containerFail, options);
+    editorFail.set({});
+
 });

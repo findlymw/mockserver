@@ -6,6 +6,11 @@
     #addNewApiPanel{
         font-size: 16px;}
     .addApiForm{margin: 10px;}
+    .addApiForm label{display: block;
+        width: 140px;
+        float: left;
+        text-align: right;
+        padding-right: 10px;}
 </style>
 <div data-options="region:'north',border:false" style="height:60px;">
     <h1>Mock Server
@@ -18,34 +23,76 @@
     2018 &copy; Mock Server v1.0.0
 </div>
 <div id="addNewApiPanel" data-options="region:'center',title:'Add New API'">
-        <div class="addApiForm">
-            <label>API Group:</label>
-            <span id="apiGroupSelect"></span>
+
+    <div class="easyui-tabs" style="width:100%;height:100%">
+        <div title="API信息" style="padding:10px">
+
+            <div class="addApiForm">
+                <label>API Group:</label>
+                <span id="apiGroupSelect"></span>
+            </div>
+            <div class="addApiForm">
+                <label for="Restful">Restful:</label>
+                <input class="easyui-validatebox" type="text" style="width: 60%;" placeholder="/xxxx/xxx/xxx/xxx/xxx" name="Restful" data-options="required:true" />
+            </div>
+            <div class="addApiForm">
+                <label>Request Method:</label>
+                <span id="reqMethodSelect"></span>
+            </div>
+            <div class="addApiForm">
+                <label>Request Content Type:</label>
+                <span id="reqContentTypeSelect"></span>
+            </div>
+            <div class="addApiForm">
+                <label>Response Content Type:</label>
+                <span id="respContentTypeSelect"></span>
+            </div>
+
+
         </div>
-        <div class="addApiForm">
-            <label>Request Method:</label>
-            <span id="reqMethodSelect"></span>
+        <div title="入参" style="padding:10px">
+            <div class="addApiForm" style="border-bottom: 1px solid #efefef;padding: 5px;">
+                <label>是否有headers类型参数:</label>
+                <span class="radioSpan">
+                    <input type="radio" name="headersFlag" checked="checked" value="0">否</input>
+                    <input type="radio" name="headersFlag" value="1">是</input>
+                </span>
+            </div>
+
+            <div class="addApiForm" style="border-bottom: 1px solid #efefef;padding: 5px;">
+                <label>是否有Body类型参数:</label>
+                <span class="radioSpan">
+                    <input type="radio" name="bodyFlag" checked="checked" value="0">否</input>
+                    <input type="radio" name="bodyFlag" value="1">是</input>
+                </span>
+            </div>
         </div>
-        <div class="addApiForm">
-            <label>Params Type of Input:</label>
-            <span id="inputTypeSelect"></span>
+        <div title="正确出参"  style="padding:10px">
+            <div class="addApiForm">
+                <div id="jsoneditorSuccess" style="width: 100%; height: 500px;"></div>
+            </div>
         </div>
-        <div class="addApiForm">
-            <label>Request Content Type:</label>
-            <span id="reqContentTypeSelect"></span>
+        <div title="错误出参"  style="padding:10px">
+            <div class="addApiForm">
+                <div id="jsoneditorFail" style="width: 100%; height: 500px;"></div>
+            </div>
         </div>
-        <div class="addApiForm">
-            <label>Response Content Type:</label>
-            <span id="respContentTypeSelect"></span>
-        </div>
-        <div class="addApiForm">
-            <label for="Restful">Restful:</label>
-            <input class="easyui-validatebox" type="text" style="width: 60%" placeholder="/xxxx/xxx/xxx/xxx/xxx" name="Restful" data-options="required:true" />
-        </div>
-        <div class="addApiForm">
-            <label for="Output">Output:</label><br/>
-            <textarea class="easyui-validatebox" style="width: 60%;height: 200px;" name="Output"  placeholder="{}" data-options="required:true"></textarea>
-        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </div>
 
 <script type="text/javascript" th:src="@{/js/project/common.js}"></script>
