@@ -14,9 +14,11 @@ $(document).ready(function(){
             success: function(json) {
                 //console.log(JSON.stringify(json));
                 if (json) {
-
-                    console.log(JSON.stringify(json));
-
+                    if(json.success == true){
+                        $.messager.alert('Info', '恭喜，添加成功', 'Info');
+                    }else{
+                        $.messager.alert('Error', 'Sorry，添加失败原因：'+json.desc, 'Error');
+                    }
                     ajaxLoadEnd();
                 }else {
                     $.messager.alert('Warning', '加载字典数据失败，请刷新页面重试', 'warning');

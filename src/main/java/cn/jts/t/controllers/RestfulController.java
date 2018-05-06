@@ -103,6 +103,8 @@ public class RestfulController {
                     //如果headFlag和bodyflag都是0，则不需要需任何入参数据
                     if(api.getInputHeadFlag() == 0 && api.getInputBodyFlag() == 0){
                         apiService.insert(api);
+                        result.setSuccess(true);
+                        result.setData(api);
                     }
 
                     if(api.getInputHeadFlag() == 1 && api.getInputBodyFlag() == 0){
