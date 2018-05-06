@@ -74,8 +74,13 @@ function addHeaderParam(){
         var randomId = ~~(Math.random()*100000);
         $('#headersParams').append('<p class="headerParamsP"><span onclick="delHeaderParam(this);" title="删除" style="cursor:pointer;margin-right:20px;color: red;"> X </span><b>Key: </b>'+
             '<span><input id="headerKey'+randomId+'" type="text" maxlength="50"/></span>' +
-            '  <b>参数类型: </b><span id="headersParamType'+randomId+'"></span><b>是否必填: </b><span><select id="headerKeyMust"'+randomId+'><option value="1">是</option><option value="0">否</option></select></span></p>');
+            '  <b>类型: </b><span id="headersParamType'+randomId+'"></span><b>是否必填: </b><span><select id="headerKeyMust"'+randomId+'><option value="1">是</option><option value="0">否</option></select></span>'+
+            '<b>值：</b><span><input class="paramValueInput" type="text" /></span><b>单位：</b><span id="paramUnitSelect'+randomId+'"></span>'+
+            '<b>规格：</b><span><input type="text" placeholder="比如边界规格要求" /></span>'+
+            '<b>说明：</b><span><input type="text" placeholder="参数说明" /></span>'+
+            '</p>');
         $('#headersParamType'+randomId).html(getSelect('columnType'+randomId,columnTypes.options));
+        $('#paramUnitSelect'+randomId).html(getSelect('unitType'+randomId,units.options));
         headerParamsCount += 1
         console.log('headerParamsCount : ' + headerParamsCount);
     }else{
@@ -88,8 +93,13 @@ function addBodyParam(){
         var randomId = ~~(Math.random()*100000);
         $('#bodyParams').append('<p class="bodyParamsP"><span onclick="delBodyParam(this);" title="删除" style="cursor:pointer;margin-right:20px;color: red;"> X </span><b>Key: </b>'+
             '<span><input id="bodyKey'+randomId+'" type="text" maxlength="50"/></span>' +
-            '  <b>参数类型: </b><span id="bodyParamType'+randomId+'"></span><b>是否必填: </b><span><select id="bodyKeyMust"'+randomId+'><option>是</option><option>否</option></select></span></p>');
+            '  <b>类型: </b><span id="bodyParamType'+randomId+'"></span><b>是否必填: </b><span><select id="bodyKeyMust"'+randomId+'><option>是</option><option>否</option></select></span>'+
+            '<b>值：</b><span><input class="paramValueInput" type="text" /></span><b>单位：</b><span id="paramUnitSelect'+randomId+'"></span>'+
+            '<b>规格：</b><span><input type="text" placeholder="比如边界规格要求" /></span>'+
+            '<b>说明：</b><span><input type="text" placeholder="参数说明" /></span>'+
+            '</p>');
         $('#bodyParamType'+randomId).html(getSelect('bodyColumnType'+randomId,columnTypes.options));
+        $('#paramUnitSelect'+randomId).html(getSelect('unitType'+randomId,units.options));
         bodyParamsCount += 1
         console.log('bodyParamsCount : ' + bodyParamsCount);
     }else{

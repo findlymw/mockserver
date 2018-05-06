@@ -21,6 +21,53 @@ public class AddApiInput {
     private InputParam[] bodyParams;
 
 
+    private String apiName;
+    private String preApi;
+    private int isExpired;
+    private String version;
+    private String dbNameTable;
+
+
+    public String getApiName() {
+        return apiName;
+    }
+
+    public void setApiName(String apiName) {
+        this.apiName = apiName;
+    }
+
+    public String getPreApi() {
+        return preApi;
+    }
+
+    public void setPreApi(String preApi) {
+        this.preApi = preApi;
+    }
+
+    public int getIsExpired() {
+        return isExpired;
+    }
+
+    public void setIsExpired(int isExpired) {
+        this.isExpired = isExpired;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public void setVersion(String version) {
+        this.version = version;
+    }
+
+    public String getDbNameTable() {
+        return dbNameTable;
+    }
+
+    public void setDbNameTable(String dbNameTable) {
+        this.dbNameTable = dbNameTable;
+    }
+
     public String getInputParamDesc() {
         return inputParamDesc;
     }

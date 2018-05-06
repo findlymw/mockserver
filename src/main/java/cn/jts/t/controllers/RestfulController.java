@@ -1,11 +1,12 @@
 package cn.jts.t.controllers;
 
-import cn.jts.t.entity.ApiGroup;
-import cn.jts.t.entity.DicCache;
-import cn.jts.t.entity.Result;
+import cn.jts.t.entity.*;
 import cn.jts.t.entity.input.AddApiInput;
+import cn.jts.t.entity.input.InputParam;
 import cn.jts.t.entity.tree.Node;
 import cn.jts.t.service.ApiGroupService;
+import cn.jts.t.service.ApiService;
+import cn.jts.t.utils.MD5;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +18,9 @@ public class RestfulController {
 
     @Autowired
     private ApiGroupService apiGroupService;
+
+    @Autowired
+    private ApiService apiService;
 
     @Autowired
     private DicCache dicCache;
@@ -67,9 +71,108 @@ public class RestfulController {
                 result.setSuccess(false);
                 result.setDesc("BodyFlag Failed");
             }else{
-                result.setSuccess(true);
-                result.setData(addApiInput);
+
+                //构建Api
+                Api api = new Api();
+                api.setGroupId(addApiInput.getApiGroup());
+                api.setUrlString(addApiInput.getRestful());
+                api.setUrlMD5(MD5.parseStrToMd5L32(addApiInput.getRestful()));
+                api.setMethod(addApiInput.getMethod());
+                api.setRequestContentType(addApiInput.getReqContentType());
+                api.setResponseContentType(addApiInput.getRespContentType());
+                api.setOutputData(addApiInput.getOutput());
+                api.setFailData(addApiInput.getOutputFail());
+                api.setInputTypeDesc(addApiInput.getInputParamDesc());
+                api.setOutPutDesc(addApiInput.getOutPutDesc());
+                api.setOutPutFailDesc(addApiInput.getOutPutFailDesc());
+
+                api.setInputHeadFlag(addApiInput.getHeadersFlag());
+                api.setInputBodyFlag(addApiInput.getBodyFlag());
+                api.setInputBodyType(addApiInput.getInputTypeSelect());
+
+                api.setApiName(addApiInput.getApiName());
+                api.setPreAPI(addApiInput.getPreApi());
+                api.setVersionNo(addApiInput.getVersion());
+                api.setDbNameAndTableName(addApiInput.getDbNameTable());
+                api.setIsExpired(addApiInput.getIsExpired());
+
+
+
+                if(null == apiService.selectApiByApiNameOrUrlMD5(api)){
+                    //判断各类选项的参数数据
+                    //如果headFlag和bodyflag都是0，则不需要需任何入参数据
+                    if(api.getInputHeadFlag() == 0 && api.getInputBodyFlag() == 0){
+                        apiService.insert(api);
+                    }
+
+                    if(api.getInputHeadFlag() == 1 && api.getInputBodyFlag() == 0){
+                        //header has params,get header params
+                        InputParam[] inputParams = addApiInput.getHeadParams();
+                        if(inputParams == null || inputParams.length < 1){
+                            result.setSuccess(false);
+                            result.setDesc("sorry,no header params");
+                        }else{
+                            result = insertAll(result,api,inputParams,new InputParam[0]);
+                        }
+                    }else if(api.getInputHeadFlag() == 0 && api.getInputBodyFlag() == 1){
+                        //分为两种情况：form类型和非form类型
+                        InputParam[] inputParams = addApiInput.getBodyParams();
+                        if(api.getInputBodyType() == 2){
+                            inputParams = buildInputParams(addApiInput.getBodyRaw());
+                        }
+                        result = insertAll(result,api,new InputParam[0],inputParams);
+                    }else if(api.getInputHeadFlag() == 1 && api.getInputBodyFlag() == 1){
+                        InputParam[] headInputParams = addApiInput.getHeadParams();
+                        InputParam[] bodyInputParams = addApiInput.getBodyParams();
+                        if(headInputParams == null || headInputParams.length < 1){
+                            result.setSuccess(false);
+                            result.setDesc("sorry,no header params");
+                        }else{
+                            if(api.getInputBodyType() == 2){
+                                bodyInputParams = buildInputParams(addApiInput.getBodyRaw());
+                            }
+                            result = insertAll(result,api,headInputParams,bodyInputParams);
+                        }
+                    }
+
+                }else{
+                    result.setSuccess(false);
+                    result.setDesc("API Name or URL is exist");
+                }
+
+
+
             }
+        }
+        return result;
+    }
+
+    private InputParam[] buildInputParams(String bodyRaw){
+        InputParam[] inputParams = new InputParam[1];
+        InputParam _inputParam = new InputParam();
+        _inputParam.setDesc("");
+        _inputParam.setIsMust(1);
+        _inputParam.setKey("none");
+        _inputParam.setParamType(2);
+        _inputParam.setSpec("");
+        _inputParam.setUnit(1);
+        _inputParam.setValue(bodyRaw);
+        inputParams[0] = _inputParam;
+        return inputParams;
+    }
+
+    private Result insertAll(Result result, Api api, InputParam[] headInputParams, InputParam[] bodyInputParams){
+        try {
+            if (apiService.insertAll(api, headInputParams, bodyInputParams)){
+                result.setSuccess(true);
+                result.setData(api);
+            }else{
+                result.setSuccess(false);
+                result.setDesc("add api failed");
+            }
+        } catch (Exception e) {
+            result.setSuccess(false);
+            result.setDesc("add api exception:" + e.getMessage());
         }
         return result;
     }

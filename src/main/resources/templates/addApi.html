@@ -31,9 +31,15 @@
                 <label>API Group:</label>
                 <span id="apiGroupSelect"></span>
             </div>
+
+            <div class="addApiForm">
+                <label for="apiName">API Name:</label>
+                <span id="apiName"><input class="easyui-validatebox" type="text" style="width: 60%;" placeholder="input api name" name="apiName" data-options="required:true" /></span>
+            </div>
+
             <div class="addApiForm">
                 <label for="Restful">Restful:</label>
-                <input class="easyui-validatebox" type="text" style="width: 60%;" placeholder="/xxxx/xxx/xxx/xxx/xxx" name="Restful" data-options="required:true" />
+                <input id="Restful" class="easyui-validatebox" type="text" style="width: 60%;" placeholder="/xxxx/xxx/xxx/xxx/xxx" name="Restful" data-options="required:true" />
             </div>
             <div class="addApiForm">
                 <label>Request Method:</label>
@@ -47,6 +53,25 @@
                 <label>Response Content Type:</label>
                 <span id="respContentTypeSelect"></span>
             </div>
+
+
+            <div class="addApiForm">
+                <label for="preApiInput">Pre API:</label>
+                <span id="preAPI"><input id="preApiInput" name="preApiInput" type="text" value="无" class="easyui-validatebox" data-options="required:true"/></span>
+            </div>
+            <div class="addApiForm">
+                <label>Is Expired:</label>
+                <span id="isExpired"><select id="isExpiredSelect"><option value="0">否</option><option value="1">是</option></select></span>
+            </div>
+            <div class="addApiForm">
+                <label for="version">version No.:</label>
+                <span id="versionNo"><input id="version" name="version" type="text" value="0.0.1" class="easyui-validatebox" data-options="required:true"/> </span>
+            </div>
+            <div class="addApiForm">
+                <label for="dbNameTable">DB Name And Table Name:</label>
+                <span id="dbNameAndTableName"><textarea id="dbNameTable" name="dbNameTable" style="width: 60%;height: 60px;" class="easyui-validatebox" placeholder="涉及到的数据与表，以及表字段说明"  data-options="required:true"></textarea></span>
+            </div>
+
 
 
         </div>

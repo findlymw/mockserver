@@ -39,6 +39,13 @@ $(document).ready(function(){
         obj.inputParamDesc = simplemdeInput.value();
         obj.outPutDesc = simplemdeOutput.value();
         obj.outPutFailDesc = simplemdeOutputFail.value();
+
+        obj.apiName = $('#apiName').find('input').val();
+        obj.preApi = $('#preApiInput').val();
+        obj.isExpired = $('#isExpiredSelect').val();
+        obj.version = $('#version').val();
+        obj.dbNameTable = $('#dbNameTable').val();
+
         obj.headParams = [];
         obj.bodyParams = [];
         if(obj.headersFlag && obj.headersFlag == 1){
@@ -48,9 +55,17 @@ $(document).ready(function(){
                 headerParamsP.each(function(){
                     var p = $(this);
                     var headParam = new Object();
-                    headParam.key = p.find('input').val();
+                    headParam.key = p.find('input').eq(0).val();
                     headParam.paramType = p.find('select').eq(0).val();
                     headParam.isMust = p.find('select').eq(1).val();
+
+                    headParam.value = p.find('input').eq(1).val();
+                    headParam.unit = p.find('select').eq(2).val();
+                    headParam.spec = p.find('input').eq(2).val();
+                    headParam.desc = p.find('input').eq(3).val();
+
+
+
                     obj.headParams.push(headParam);
                     console.log(headParam.key + headParam.paramType + headParam.isMust);
                 });
@@ -65,9 +80,16 @@ $(document).ready(function(){
                     bodyParamsP.each(function(){
                         var p = $(this);
                         var bodyParam = new Object();
-                        bodyParam.key = p.find('input').val();
+                        bodyParam.key = p.find('input').eq(0).val();
                         bodyParam.paramType = p.find('select:checked').eq(0).val();
                         bodyParam.isMust = p.find('select:checked').eq(1).val();
+
+                        bodyParam.value = p.find('input').eq(1).val();
+                        bodyParam.unit = p.find('select').eq(2).val();
+                        bodyParam.spec = p.find('input').eq(2).val();
+                        bodyParam.desc = p.find('input').eq(3).val();
+
+
                         obj.bodyParams.push(bodyParam);
                         console.log(bodyParam.key + bodyParam.paramType + bodyParam.isMust);
                     });
@@ -87,6 +109,8 @@ $(document).ready(function(){
             //1 判断apiGroup是否为空
             if(!obj.apiGroup){
                 $.messager.alert('Warning','Sorry,您未选中API Group的选项，它在API信息选项卡中，请重新选择。');
+            }else if(!obj.apiName){
+                $.messager.alert('Warning','Sorry,您未填写API Name 字段详细说明，它在API信息选项卡中，请重新填写。');
             }else if(!obj.restful){
                 //2 判断url是否为空，并且判断第一个字符是否反斜杠
                 $.messager.alert('Warning','Sorry,您未填写Restful Url，它在API信息选项卡中，请重新填写。');
@@ -99,7 +123,15 @@ $(document).ready(function(){
                 $.messager.alert('Warning','Sorry,您未选中Request Content-type 的选项，它在API信息选项卡中，请重新选择。');
             }else if(!obj.respContentType){
                 $.messager.alert('Warning','Sorry,您未选中Request Content-type 的选项，它在API信息选项卡中，请重新选择。');
-            }else if(!obj.output || obj.output == '{}'){
+            }else if(!obj.preApi){
+                $.messager.alert('Warning','Sorry,您未填写 Pre API，它在API信息选项卡中，请重新填写。');
+            }else if(!obj.isExpired){
+                $.messager.alert('Warning','Sorry,您未选中 Is Expired 的选项，它在API信息选项卡中，请重新选择。');
+            }else if(!obj.version){
+                $.messager.alert('Warning','Sorry,您未填写 Version No. ，它在API信息选项卡中，请重新填写。');
+            }else if(!obj.dbNameTable){
+                $.messager.alert('Warning','Sorry,您未填写 DB Name And Table Name ，它在API信息选项卡中，请重新填写。');
+            } else if(!obj.output || obj.output == '{}'){
                 $.messager.alert('Warning','Sorry,您未填写【正确出参】，它在【正确出参】选项卡中，请重新选择并填写。');
             }else if(!obj.outputFail || obj.outputFail == '{}'){
                 $.messager.alert('Warning','Sorry,您未填写【错误出参】，它在【错误出参】选项卡中，请重新选择并填写。');
@@ -124,7 +156,16 @@ $(document).ready(function(){
                             var headParam = obj.headParams[n];
                             if(!headParam.key){
                                 console.log(JSON.stringify(headParam))
-                                $.messager.alert('Warning','Sorry,您增加的 header 参数没有填写，请重新填写。');
+                                $.messager.alert('Warning','Sorry,您增加的 header 参数key没有填写，请重新填写。');
+                                break;
+                            }else if(!headParam.value){
+                                $.messager.alert('Warning','Sorry,您增加的 header 参数值没有填写，请重新填写。');
+                                break;
+                            }else if(!headParam.spec){
+                                $.messager.alert('Warning','Sorry,您增加的 header 参数规格没有填写，请重新填写。');
+                                break;
+                            }else if(!headParam.desc){
+                                $.messager.alert('Warning','Sorry,您增加的 header 参数说明没有填写，请重新填写。');
                                 break;
                             }
                         }
@@ -151,7 +192,16 @@ $(document).ready(function(){
                                 var bodyParam = obj.bodyParams[m];
                                 if(!bodyParam.key){
                                     console.log(JSON.stringify(bodyParam))
-                                    $.messager.alert('Warning','Sorry,您增加的 body 参数没有填写，请重新填写。');
+                                    $.messager.alert('Warning','Sorry,您增加的 body 参数key没有填写，请重新填写。');
+                                    break;
+                                }else if(!bodyParam.value){
+                                    $.messager.alert('Warning','Sorry,您增加的 body 参数值没有填写，请重新填写。');
+                                    break;
+                                }else if(!bodyParam.spec){
+                                    $.messager.alert('Warning','Sorry,您增加的 body 参数规格没有填写，请重新填写。');
+                                    break;
+                                }else if(!bodyParam.desc){
+                                    $.messager.alert('Warning','Sorry,您增加的 body 参数说明没有填写，请重新填写。');
                                     break;
                                 }
                             }
@@ -171,7 +221,16 @@ $(document).ready(function(){
                         var headParam = obj.headParams[i];
                         if(!headParam.key){
                             console.log(JSON.stringify(headParam))
-                            $.messager.alert('Warning','Sorry,您增加的 header 参数没有填写，请重新填写。');
+                            $.messager.alert('Warning','Sorry,您增加的 header 参数key没有填写，请重新填写。');
+                            break;
+                        }else if(!headParam.value){
+                            $.messager.alert('Warning','Sorry,您增加的 header 参数值没有填写，请重新填写。');
+                            break;
+                        }else if(!headParam.spec){
+                            $.messager.alert('Warning','Sorry,您增加的 header 参数规格没有填写，请重新填写。');
+                            break;
+                        }else if(!headParam.desc){
+                            $.messager.alert('Warning','Sorry,您增加的 header 参数说明没有填写，请重新填写。');
                             break;
                         }
                     }
@@ -190,7 +249,16 @@ $(document).ready(function(){
                                     var bodyParam = obj.bodyParams[j];
                                     if(!bodyParam.key){
                                         console.log(JSON.stringify(bodyParam))
-                                        $.messager.alert('Warning','Sorry,您增加的 body 参数没有填写，请重新填写。');
+                                        $.messager.alert('Warning','Sorry,您增加的 body 参数key没有填写，请重新填写。');
+                                        break;
+                                    }else if(!bodyParam.value){
+                                        $.messager.alert('Warning','Sorry,您增加的 body 参数值没有填写，请重新填写。');
+                                        break;
+                                    }else if(!bodyParam.spec){
+                                        $.messager.alert('Warning','Sorry,您增加的 body 参数规格没有填写，请重新填写。');
+                                        break;
+                                    }else if(!bodyParam.desc){
+                                        $.messager.alert('Warning','Sorry,您增加的 body 参数说明没有填写，请重新填写。');
                                         break;
                                     }
                                 }

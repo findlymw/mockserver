@@ -9,7 +9,6 @@ public class Input extends BaseEntity {
     private int paramUnit;
     private String paramValue;
     private int isMust;
-    private String otherDesc;
 
     public long getApiId() {
         return apiId;
@@ -73,13 +72,5 @@ public class Input extends BaseEntity {
 
     public void setIsMust(int isMust) {
         this.isMust = isMust;
-    }
-
-    public String getOtherDesc() {
-        return otherDesc;
-    }
-
-    public void setOtherDesc(String otherDesc) {
-        this.otherDesc = otherDesc;
     }
 }
