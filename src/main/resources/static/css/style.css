@@ -2,3 +2,8 @@
 #headersParams p .paramValueInput {width: 50px;}
 #bodyParams p input {width: 100px;}
 #bodyParams p .paramValueInput {width: 50px;}
+.messageBoxBSuccess{color:#6aa84f;font-size: 16px;}
+.messageBoxBFail{color:#660000;font-size: 16px;}
+.messageBoxBWarning{color:#ffd966;font-size: 16px;}
+.messageBoxBError{color:#cc0000;font-size: 16px;}
+.messageBoxBTip{color:#0088CC;font-size: 16px;}

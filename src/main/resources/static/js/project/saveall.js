@@ -15,17 +15,81 @@ $(document).ready(function(){
                 //console.log(JSON.stringify(json));
                 if (json) {
                     if(json.success == true){
-                        $.messager.alert('Info', '恭喜，添加成功', 'Info');
+                        $.messager.alert('Info', '恭喜，<b class="messageBoxBSuccess">添加成功</b>', 'Info');
                     }else{
-                        $.messager.alert('Error', 'Sorry，添加失败原因：'+json.desc, 'Error');
+                        $.messager.alert('Error', 'Sorry，添加失败原因：<b class="messageBoxBError">'+json.desc+'</b>', 'Error');
                     }
                     ajaxLoadEnd();
                 }else {
-                    $.messager.alert('Warning', '加载字典数据失败，请刷新页面重试', 'warning');
+                    $.messager.alert('Warning', '<b class="messageBoxBWarning">加载字典数据失败，请刷新页面重试</b>', 'warning');
                 }
             }
         });
     }
+
+    function validateParams(params,paramType){
+        var n=0;
+        var result = {};
+        result.message = {};
+        result.success = false;
+        result.message.title = 'Warning';
+        if(params && params.length > 0){
+            for(n=0;n<params.length;n++){
+                var param = params[n];
+                if(!param.key){
+                    result.message.content = 'Sorry,您增加的 <b class="messageBoxBWarning">'+paramType+' 参数key</b> 没有填写，请重新填写。';
+                    break;
+                }else if(!param.value){
+                    result.message.content = 'Sorry,您增加的 <b class="messageBoxBWarning">'+paramType+' 参数值</b> 没有填写，请重新填写。';
+                    break;
+                }else if(!param.spec){
+                    result.message.content = 'Sorry,您增加的 <b class="messageBoxBWarning">'+paramType+' 参数规格</b> 没有填写，请重新填写。';
+                    break;
+                }else if(!param.desc){
+                    result.message.content = 'Sorry,您增加的 <b class="messageBoxBWarning">'+paramType+' 参数说明</b> 没有填写，请重新填写。';
+                    break;
+                }
+            }
+            if(n>=params.length){
+                /**********ok*********/
+               // exeSave(obj);
+                result.success = true;
+            }
+
+        }else{
+            result.message.content =  'Sorry,<b class="messageBoxBWarning">您未增加 header 参数，它在入参选项卡中，请重新填写。</b>';
+        }
+        return result;
+    }
+
+    function saveBodyParams(obj){
+        if(obj.inputTypeSelect && obj.inputTypeSelect == '2'){
+            if(obj.bodyRaw && obj.bodyRaw.length > 2){
+                /**********ok*********/
+                exeSave(obj);
+            }else{
+                $.messager.alert('Warning','Sorry,您未填写<b class="messageBoxBWarning">【body-raw】，它在【入参】选项卡中</b>，请重新选择并填写。');
+            }
+        }else{
+            var result = validateParams(obj.bodyParams,'body');
+
+            if(result && result.success === true){
+                exeSave(obj);
+            }else{
+                $.messager.alert(result.message.title,result.message.content);
+            }
+        }
+    }
+
+    function saveHeaderParams(obj){
+        var result = validateParams(obj.headParams,'header');
+        if(result && result.success === true){
+            exeSave(obj);
+        }else{
+            $.messager.alert(result.message.title,result.message.content);
+        }
+    }
+
 
 
     $('.saveall').on('click',function(){
@@ -106,175 +170,59 @@ $(document).ready(function(){
 
         //上面是获取所有需要获取的值，放入到obj的对象中，下面对obj的值进行判断
         if(!obj){
-            $.messager.alert('Warning','提交API的数据对象不存在，系统可能出现了非常严重的问题了。');
+            $.messager.alert('Warning','<b class="messageBoxBError">提交API的数据对象不存在，系统可能出现了非常严重的问题了。</b>');
         }else{
             //1 判断apiGroup是否为空
             if(!obj.apiGroup){
-                $.messager.alert('Warning','Sorry,您未选中API Group的选项，它在API信息选项卡中，请重新选择。');
+                $.messager.alert('Warning','Sorry,您未选中<b class="messageBoxBError">API Group</b>的选项，它在<b class="messageBoxBTip">API信息</b>选项卡中，请重新选择。');
             }else if(!obj.apiName){
-                $.messager.alert('Warning','Sorry,您未填写API Name 字段详细说明，它在API信息选项卡中，请重新填写。');
+                $.messager.alert('Warning','Sorry,您未填写<b class="messageBoxBError">API Name</b> 字段详细说明，它在<b class="messageBoxBTip">API信息</b>选项卡中，请重新填写。');
             }else if(!obj.restful){
                 //2 判断url是否为空，并且判断第一个字符是否反斜杠
-                $.messager.alert('Warning','Sorry,您未填写Restful Url，它在API信息选项卡中，请重新填写。');
+                $.messager.alert('Warning','Sorry,您未填写<b class="messageBoxBError">Restful Url</b>，它在<b class="messageBoxBTip">API信息</b>选项卡中，请重新填写。');
             }else if(obj.restful[0] != '/'){
                 //2 判断url是否为空，并且判断第一个字符是否反斜杠
-                $.messager.alert('Warning','Sorry,您填写的Restful Url的格式不正确，第一个字符必须是<b style="color:red;">/</b>，它在API信息选项卡中，请重新填写。');
+                $.messager.alert('Warning','Sorry,您填写的<b class="messageBoxBError">Restful Url的格式不正确</b>，第一个字符必须是<b style="color:red;">/</b>，它在API信息选项卡中，请重新填写。');
             }else if(!obj.method){
-                $.messager.alert('Warning','Sorry,您未选中Request Method的选项，它在API信息选项卡中，请重新选择。');
+                $.messager.alert('Warning','Sorry,您未选中<b class="messageBoxBError">Request Method</b>的选项，它在<b class="messageBoxBTip">API信息</b>选项卡中，请重新选择。');
             }else if(!obj.reqContentType){
-                $.messager.alert('Warning','Sorry,您未选中Request Content-type 的选项，它在API信息选项卡中，请重新选择。');
+                $.messager.alert('Warning','Sorry,您未选中<b class="messageBoxBError">Request Content-type</b> 的选项，它在<b class="messageBoxBTip">API信息</b>选项卡中，请重新选择。');
             }else if(!obj.respContentType){
-                $.messager.alert('Warning','Sorry,您未选中Request Content-type 的选项，它在API信息选项卡中，请重新选择。');
+                $.messager.alert('Warning','Sorry,您未选中<b class="messageBoxBError">Request Content-type</b> 的选项，它在<b class="messageBoxBTip">API信息</b>选项卡中，请重新选择。');
             }else if(!obj.preApi){
-                $.messager.alert('Warning','Sorry,您未填写 Pre API，它在API信息选项卡中，请重新填写。');
+                $.messager.alert('Warning','Sorry,您未填写 <b class="messageBoxBError">Pre API</b>，它在<b class="messageBoxBTip">API信息</b>选项卡中，请重新填写。');
             }else if(!obj.isExpired){
-                $.messager.alert('Warning','Sorry,您未选中 Is Expired 的选项，它在API信息选项卡中，请重新选择。');
+                $.messager.alert('Warning','Sorry,您未选中 <b class="messageBoxBError">Is Expired</b> 的选项，它在<b class="messageBoxBTip">API信息</b>选项卡中，请重新选择。');
             }else if(!obj.version){
-                $.messager.alert('Warning','Sorry,您未填写 Version No. ，它在API信息选项卡中，请重新填写。');
+                $.messager.alert('Warning','Sorry,您未填写 <b class="messageBoxBError">Version No. </b>，它在<b class="messageBoxBTip">API信息</b>选项卡中，请重新填写。');
             }else if(!obj.dbNameTable){
-                $.messager.alert('Warning','Sorry,您未填写 DB Name And Table Name ，它在API信息选项卡中，请重新填写。');
+                $.messager.alert('Warning','Sorry,您未填写 <b class="messageBoxBError">DB Name And Table Name </b>，它在<b class="messageBoxBTip">API信息</b>选项卡中，请重新填写。');
             } else if(!obj.output || obj.output == '{}'){
-                $.messager.alert('Warning','Sorry,您未填写【正确出参】，它在【正确出参】选项卡中，请重新选择并填写。');
+                $.messager.alert('Warning','Sorry,您未填写<b class="messageBoxBError">【正确出参】</b>，它在<b class="messageBoxBTip">【正确出参】</b>选项卡中，请重新选择并填写。');
             }else if(!obj.outputFail || obj.outputFail == '{}'){
-                $.messager.alert('Warning','Sorry,您未填写【错误出参】，它在【错误出参】选项卡中，请重新选择并填写。');
+                $.messager.alert('Warning','Sorry,您未填写<b class="messageBoxBError">【错误出参】</b>，它在<b class="messageBoxBTip">【错误出参】</b>选项卡中，请重新选择并填写。');
             }else if(!obj.headersFlag){
-                $.messager.alert('Warning','Sorry,您未选中 是否有headers类型参数 的选项，它在入参选项卡中，请重新选择。');
+                $.messager.alert('Warning','Sorry,您未选中 <b class="messageBoxBError">是否有headers类型参数</b> 的选项，它在<b class="messageBoxBTip">入参</b>选项卡中，请重新选择。');
             }else if(!obj.bodyFlag){
-                $.messager.alert('Warning','Sorry,您未选中 是否有Body类型参数 的选项，它在入参选项卡中，请重新选择。');
+                $.messager.alert('Warning','Sorry,您未选中 <b class="messageBoxBError">是否有Body类型参数</b> 的选项，它在<b class="messageBoxBTip">入参</b>选项卡中，请重新选择。');
             }else if(!obj.inputParamDesc){
-                $.messager.alert('Warning','Sorry,您未填写入参的字段详细说明，它在入参选项卡中，请重新填写。');
+                $.messager.alert('Warning','Sorry,您未填写<b class="messageBoxBError">入参的字段详细说明</b>，它在<b class="messageBoxBTip">入参</b>选项卡中，请重新填写。');
             }else if(!obj.outPutDesc){
-                $.messager.alert('Warning','Sorry,您未填写正确出参的字段详细说明，它在正确出参选项卡中，请重新填写。');
+                $.messager.alert('Warning','Sorry,您未填写<b class="messageBoxBError">正确出参的字段详细说明</b>，它在<b class="messageBoxBTip">正确出参</b>选项卡中，请重新填写。');
             }else if(!obj.outPutFailDesc){
-                $.messager.alert('Warning','Sorry,您未填写错误出参的字段详细说明，它在错误出参选项卡中，请重新填写。');
+                $.messager.alert('Warning','Sorry,您未填写<b class="messageBoxBError">错误出参的字段详细说明</b>，它在<b class="messageBoxBTip">错误出参</b>选项卡中，请重新填写。');
             }else if(obj.headersFlag == '0' && obj.bodyFlag == '0'){
-                console.log('no input params');
-                /**********ok*********/
                 exeSave(obj);
             }else if(obj.bodyFlag == '0' && obj.headersFlag == '1'){
-                var n=0;
-                    if(obj.headParams && obj.headParams.length > 0){
-                        for(n=0;n<obj.headParams.length;n++){
-                            var headParam = obj.headParams[n];
-                            if(!headParam.key){
-                                console.log(JSON.stringify(headParam))
-                                $.messager.alert('Warning','Sorry,您增加的 header 参数key没有填写，请重新填写。');
-                                break;
-                            }else if(!headParam.value){
-                                $.messager.alert('Warning','Sorry,您增加的 header 参数值没有填写，请重新填写。');
-                                break;
-                            }else if(!headParam.spec){
-                                $.messager.alert('Warning','Sorry,您增加的 header 参数规格没有填写，请重新填写。');
-                                break;
-                            }else if(!headParam.desc){
-                                $.messager.alert('Warning','Sorry,您增加的 header 参数说明没有填写，请重新填写。');
-                                break;
-                            }
-                        }
-                        if(n>=obj.headParams.length){
-                            /**********ok*********/
-                            exeSave(obj);
-                        }
-
-                    }else{
-                        $.messager.alert('Warning','Sorry,您未增加 header 参数，它在入参选项卡中，请重新填写。');
-                    }
+               saveHeaderParams(obj);
             }else if(obj.bodyFlag == '1' && obj.headersFlag == '0'){
-                    if(obj.inputTypeSelect && obj.inputTypeSelect == '2'){
-                        if(obj.bodyRaw && obj.bodyRaw.length > 2){
-                            /**********ok*********/
-                            exeSave(obj);
-                        }else{
-                            $.messager.alert('Warning','Sorry,您未填写【body-raw】，它在【入参】选项卡中，请重新选择并填写。');
-                        }
-                    }else{
-                        var m = 0;
-                        if(obj.bodyParams && obj.bodyParams.length > 0){
-                            for(m=0;m<obj.bodyParams.length;m++){
-                                var bodyParam = obj.bodyParams[m];
-                                if(!bodyParam.key){
-                                    console.log(JSON.stringify(bodyParam))
-                                    $.messager.alert('Warning','Sorry,您增加的 body 参数key没有填写，请重新填写。');
-                                    break;
-                                }else if(!bodyParam.value){
-                                    $.messager.alert('Warning','Sorry,您增加的 body 参数值没有填写，请重新填写。');
-                                    break;
-                                }else if(!bodyParam.spec){
-                                    $.messager.alert('Warning','Sorry,您增加的 body 参数规格没有填写，请重新填写。');
-                                    break;
-                                }else if(!bodyParam.desc){
-                                    $.messager.alert('Warning','Sorry,您增加的 body 参数说明没有填写，请重新填写。');
-                                    break;
-                                }
-                            }
-                            if(m>=obj.bodyParams.length){
-                                /**********ok*********/
-                                exeSave(obj);
-                            }
-                        }else{
-                            $.messager.alert('Warning','Sorry,您未增加 body 参数，它在入参选项卡中，请重新填写。');
-                        }
-                    }
-
+                saveBodyParams(obj);
             }else if(obj.bodyFlag == '1' && obj.headersFlag == '1'){
-                var i=0;
-                if(obj.headParams && obj.headParams.length > 0){
-                    for(i=0;i<obj.headParams.length;i++){
-                        var headParam = obj.headParams[i];
-                        if(!headParam.key){
-                            console.log(JSON.stringify(headParam))
-                            $.messager.alert('Warning','Sorry,您增加的 header 参数key没有填写，请重新填写。');
-                            break;
-                        }else if(!headParam.value){
-                            $.messager.alert('Warning','Sorry,您增加的 header 参数值没有填写，请重新填写。');
-                            break;
-                        }else if(!headParam.spec){
-                            $.messager.alert('Warning','Sorry,您增加的 header 参数规格没有填写，请重新填写。');
-                            break;
-                        }else if(!headParam.desc){
-                            $.messager.alert('Warning','Sorry,您增加的 header 参数说明没有填写，请重新填写。');
-                            break;
-                        }
-                    }
-                    if(i>=obj.headParams.length){
-                        if(obj.inputTypeSelect && obj.inputTypeSelect == '2'){
-                            if(obj.bodyRaw && obj.bodyRaw.length > 2){
-                                  /**********ok*********/
-                                  exeSave(obj);
-                            }else{
-                                $.messager.alert('Warning','Sorry,您未填写【body-raw】，它在【入参】选项卡中，请重新选择并填写。');
-                            }
-                        }else{
-                            var j=0;
-                            if(obj.bodyParams && obj.bodyParams.length > 0){
-                                for(var j=0;j<obj.bodyParams.length;j++){
-                                    var bodyParam = obj.bodyParams[j];
-                                    if(!bodyParam.key){
-                                        console.log(JSON.stringify(bodyParam))
-                                        $.messager.alert('Warning','Sorry,您增加的 body 参数key没有填写，请重新填写。');
-                                        break;
-                                    }else if(!bodyParam.value){
-                                        $.messager.alert('Warning','Sorry,您增加的 body 参数值没有填写，请重新填写。');
-                                        break;
-                                    }else if(!bodyParam.spec){
-                                        $.messager.alert('Warning','Sorry,您增加的 body 参数规格没有填写，请重新填写。');
-                                        break;
-                                    }else if(!bodyParam.desc){
-                                        $.messager.alert('Warning','Sorry,您增加的 body 参数说明没有填写，请重新填写。');
-                                        break;
-                                    }
-                                }
-                                if(j>=obj.bodyParams.length){
-                                    /**********ok*********/
-                                    exeSave(obj);
-                                }
-                            }else{
-                                $.messager.alert('Warning','Sorry,您未增加 body 参数，它在入参选项卡中，请重新填写。');
-                            }
-                        }
-                    }
+                var resultOfHeader = validateParams(obj.headParams,'header');
+                if(resultOfHeader && resultOfHeader.success === true){
+                    saveBodyParams(obj);
                 }else{
-                    $.messager.alert('Warning','Sorry,您未增加 header 参数，它在入参选项卡中，请重新填写。');
+                    $.messager.alert(resultOfHeader.message.title,result.message.content);
                 }
             }
 
