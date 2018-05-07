@@ -44,6 +44,16 @@ public class ApiServerImpl implements ApiService{
         return true;
     }
 
+    @Override
+    public Api selectApiByGroupMD5(Api api) {
+        return apiMapper.selectApiByApiNameOrUrlMD5(api);
+    }
+
+    @Override
+    public Api selectApiById(Api api) {
+        return apiMapper.selectApiById(api);
+    }
+
     //hbType : 0为header参数的类型 1为body参数的类型
     private void setInput(Api api, InputParam[] inputParams,int hbType) throws Exception {
         for(int i=0;i<inputParams.length;i++){

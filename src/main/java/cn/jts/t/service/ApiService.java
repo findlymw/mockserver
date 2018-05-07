@@ -10,5 +10,6 @@ public interface ApiService {
     Api selectApiByApiNameOrUrlMD5(Api api);
     List<Api> selectApiByGroupId(Api api);
     boolean insertAll(Api api, InputParam[] headInputParams,InputParam[] bodyInputParams) throws Exception;
-
+    Api selectApiByGroupMD5(Api api);
+    Api selectApiById(Api api);
 }

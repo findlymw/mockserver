@@ -7,3 +7,31 @@
 .messageBoxBWarning{color:#ffd966;font-size: 16px;}
 .messageBoxBError{color:#cc0000;font-size: 16px;}
 .messageBoxBTip{color:#0088CC;font-size: 16px;}
+
+.apiDetail{padding:20px;}
+.apiDetail label{
+    font-weight: bold;}
+.apiDetail span{
+    color: red;}
+.apiDetail b{
+    color: #0088CC;}
+.apiDetail li{
+    padding:5px;
+    border-bottom: 1px solid #efefef;
+    font-size: 14px;
+}
+.apiDetail table{
+    width: 100%;
+    table-layout:fixed;
+    empty-cells:show;
+    border-collapse: collapse;
+    margin:0 auto;
+}
+.apiDetail table th{
+    border:1px solid #efefef;
+    background: #ccc;
+}
+.apiDetail table td{
+    border:1px solid #efefef;
+    color: #6aa84f;
+}

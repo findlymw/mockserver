@@ -11,6 +11,44 @@ public class Input extends BaseEntity {
     private String paramValue;
     private int isMust;
 
+    private String hbTypeString;
+    private String paramTypeString;
+    private String paramUnitString;
+    private String isMustString;
+
+
+    public String getHbTypeString() {
+        return hbTypeString;
+    }
+
+    public void setHbTypeString(String hbTypeString) {
+        this.hbTypeString = hbTypeString;
+    }
+
+    public String getParamTypeString() {
+        return paramTypeString;
+    }
+
+    public void setParamTypeString(String paramTypeString) {
+        this.paramTypeString = paramTypeString;
+    }
+
+    public String getParamUnitString() {
+        return paramUnitString;
+    }
+
+    public void setParamUnitString(String paramUnitString) {
+        this.paramUnitString = paramUnitString;
+    }
+
+    public String getIsMustString() {
+        return isMustString;
+    }
+
+    public void setIsMustString(String isMustString) {
+        this.isMustString = isMustString;
+    }
+
     public int getHbType() {
         return hbType;
     }

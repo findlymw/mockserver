@@ -7,6 +7,7 @@ import cn.jts.t.entity.tree.Node;
 import cn.jts.t.service.ApiGroupService;
 import cn.jts.t.service.ApiService;
 import cn.jts.t.service.InputService;
+import cn.jts.t.utils.ApiTrans;
 import cn.jts.t.utils.MD5;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +31,26 @@ public class RestfulController {
     private DicCache dicCache;
 
 
+    @RequestMapping("/restful/getapi/{id}")
+    public Api getApiById(@PathVariable long id){
+        Api api = new Api();
+        if(id > 0){
+            api.setId(id);
+            api = apiService.selectApiById(api);
+            if(null != api){
+                api.setInputs(inputService.selectInputByApiId(api));
+                List<ApiGroup> apiGroupList = apiGroupService.selectApiGroupList();
+                if(null == apiGroupList){
+                    apiGroupList = new ArrayList<ApiGroup>();
+                }
+                ApiTrans.apiTrans(api,dicCache,apiGroupList);
+            }else{
+                api = new Api();
+            }
+        }
+        return api;
+    }
+
     @RequestMapping("/restful/getApilist/{id}")
     public List<Api> getApiList(@PathVariable long id){
         Api api = new Api();
@@ -38,10 +59,13 @@ public class RestfulController {
         if(null == apiList){
             apiList = new ArrayList<Api>();
         }
+
+        List<ApiGroup> apiGroups = apiGroupService.selectApiGroupList();
         if(apiList.size() > 0){
             for (Api _api: apiList
                     ) {
                 _api.setInputs(inputService.selectInputByApiId(_api));
+                ApiTrans.apiTrans(_api,dicCache,apiGroups);
             }
         }
         return apiList;

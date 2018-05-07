@@ -25,6 +25,81 @@ public class Api extends BaseEntity {
     private int inputBodyFlag;
     private int inputBodyType;
 
+
+    private String groupIdString;
+    private String methodString;
+    private String isExpiredString;
+    private String requestContentTypeString;
+    private String responseContentTypeString;
+    private String inputBodyTypeString;
+    private String inputHeadFlagString;
+    private String inputBodyFlagString;
+
+
+    public String getGroupIdString() {
+        return groupIdString;
+    }
+
+    public void setGroupIdString(String groupIdString) {
+        this.groupIdString = groupIdString;
+    }
+
+    public String getMethodString() {
+        return methodString;
+    }
+
+    public void setMethodString(String methodString) {
+        this.methodString = methodString;
+    }
+
+    public String getIsExpiredString() {
+        return isExpiredString;
+    }
+
+    public void setIsExpiredString(String isExpiredString) {
+        this.isExpiredString = isExpiredString;
+    }
+
+    public String getRequestContentTypeString() {
+        return requestContentTypeString;
+    }
+
+    public void setRequestContentTypeString(String requestContentTypeString) {
+        this.requestContentTypeString = requestContentTypeString;
+    }
+
+    public String getResponseContentTypeString() {
+        return responseContentTypeString;
+    }
+
+    public void setResponseContentTypeString(String responseContentTypeString) {
+        this.responseContentTypeString = responseContentTypeString;
+    }
+
+    public String getInputBodyTypeString() {
+        return inputBodyTypeString;
+    }
+
+    public void setInputBodyTypeString(String inputBodyTypeString) {
+        this.inputBodyTypeString = inputBodyTypeString;
+    }
+
+    public String getInputHeadFlagString() {
+        return inputHeadFlagString;
+    }
+
+    public void setInputHeadFlagString(String inputHeadFlagString) {
+        this.inputHeadFlagString = inputHeadFlagString;
+    }
+
+    public String getInputBodyFlagString() {
+        return inputBodyFlagString;
+    }
+
+    public void setInputBodyFlagString(String inputBodyFlagString) {
+        this.inputBodyFlagString = inputBodyFlagString;
+    }
+
     private String apiName;
 
 

@@ -27,10 +27,11 @@ public class APIFilter implements Filter {
         if(null != url && !"".equals(url) && url.length()>4 ){
             int index = url.toString().indexOf("/api/");
             if( index > 0){
-                String apiUrl = url.substring(index);
+                String apiUrl = url.substring(index+4);
                 String md5 = MD5.parseStrToMd5L32(apiUrl);
                 RequestDispatcher dispatcher=httpServletRequest.getRequestDispatcher("/gateway/"+md5);
                 dispatcher.forward(httpServletRequest,httpServletResponse);
+                return;
             }
         }
 

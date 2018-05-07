@@ -30,4 +30,10 @@ public interface ApiMapper {
 
     @Select("select * from ms_api where groupId =  #{groupId}")
     List<Api> selectApiByGroupId(Api api);
+
+    @Select("select * from ms_api where urlMD5 =  #{urlMD5}")
+    Api selectApiByGroupMD5(Api api);
+
+    @Select("select * from ms_api where id =  #{id}")
+    Api selectApiById(Api api);
 }
