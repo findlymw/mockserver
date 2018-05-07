@@ -36,6 +36,21 @@ $(document).ready(function(){
         if(params && params.length > 0){
             for(n=0;n<params.length;n++){
                 var param = params[n];
+                var isSame = false;
+                for(var i=(n+1);i<params.length;i++){
+                    if(param.key == params[i].key){
+                        result.message.content = 'Sorry,您增加的 <b class="messageBoxBWarning">'+paramType+
+                            '</b> 的第' + (n+1) + '个的 Key : <b class="messageBoxBError">'+param.key+'</b>'+
+                            '与第'+(i+1)+'个的 Key : <b class="messageBoxBError">'+params[i].key+'</b> 配置<b class="messageBoxBError">重复</b>，请重新填写。';
+                        isSame = true;
+                        break;
+                    }
+                }
+
+                if(isSame === true){
+                    break;
+                }
+
                 if(!param.key){
                     result.message.content = 'Sorry,您增加的 <b class="messageBoxBWarning">'+paramType+' 参数key</b> 没有填写，请重新填写。';
                     break;
@@ -48,8 +63,7 @@ $(document).ready(function(){
                 }else if(!param.desc){
                     result.message.content = 'Sorry,您增加的 <b class="messageBoxBWarning">'+paramType+' 参数说明</b> 没有填写，请重新填写。';
                     break;
-                }
-            }
+                }            }
             if(n>=params.length){
                 /**********ok*********/
                // exeSave(obj);
@@ -222,7 +236,7 @@ $(document).ready(function(){
                 if(resultOfHeader && resultOfHeader.success === true){
                     saveBodyParams(obj);
                 }else{
-                    $.messager.alert(resultOfHeader.message.title,result.message.content);
+                    $.messager.alert(resultOfHeader.message.title,resultOfHeader.message.content);
                 }
             }
 
