@@ -2,6 +2,7 @@ package cn.jts.t.entity;
 
 public class Input extends BaseEntity {
     private long apiId;
+    private int hbType;
     private String paramName;
     private int paramType;
     private String paramSpec;
@@ -9,6 +10,14 @@ public class Input extends BaseEntity {
     private int paramUnit;
     private String paramValue;
     private int isMust;
+
+    public int getHbType() {
+        return hbType;
+    }
+
+    public void setHbType(int hbType) {
+        this.hbType = hbType;
+    }
 
     public long getApiId() {
         return apiId;
