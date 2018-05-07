@@ -1,6 +1,8 @@
 package cn.jts.t.entity;
 
 
+import java.util.List;
+
 public class Api extends BaseEntity {
     private long groupId;
     private String urlMD5;
@@ -24,6 +26,17 @@ public class Api extends BaseEntity {
     private int inputBodyType;
 
     private String apiName;
+
+
+    private List<Input> inputs;
+
+    public List<Input> getInputs() {
+        return inputs;
+    }
+
+    public void setInputs(List<Input> inputs) {
+        this.inputs = inputs;
+    }
 
     public String getApiName() {
         return apiName;

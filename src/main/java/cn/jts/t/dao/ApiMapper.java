@@ -7,6 +7,8 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.mapping.StatementType;
 
+import java.util.List;
+
 
 @Mapper
 public interface ApiMapper {
@@ -24,4 +26,8 @@ public interface ApiMapper {
 
     @Select("select * from ms_api where apiName = #{apiName} || urlMD5 = #{urlMD5}")
     Api selectApiByApiNameOrUrlMD5(Api api);
+
+
+    @Select("select * from ms_api where groupId =  #{groupId}")
+    List<Api> selectApiByGroupId(Api api);
 }

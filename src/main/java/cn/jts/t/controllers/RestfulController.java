@@ -6,6 +6,7 @@ import cn.jts.t.entity.input.InputParam;
 import cn.jts.t.entity.tree.Node;
 import cn.jts.t.service.ApiGroupService;
 import cn.jts.t.service.ApiService;
+import cn.jts.t.service.InputService;
 import cn.jts.t.utils.MD5;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,31 @@ public class RestfulController {
     private ApiService apiService;
 
     @Autowired
+    private InputService inputService;
+
+    @Autowired
     private DicCache dicCache;
+
+
+    @RequestMapping("/restful/getApilist/{id}")
+    public List<Api> getApiList(@PathVariable long id){
+        Api api = new Api();
+        api.setGroupId(id);
+        List<Api> apiList = apiService.selectApiByGroupId(api);
+        if(null == apiList){
+            apiList = new ArrayList<Api>();
+        }
+        if(apiList.size() > 0){
+            for (Api _api: apiList
+                    ) {
+                _api.setInputs(inputService.selectInputByApiId(_api));
+            }
+        }
+        return apiList;
+    }
+
+
+
 
     @RequestMapping("/restful/dic")
     public DicCache getDicCache(){

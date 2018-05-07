@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class ApiServerImpl implements ApiService{
     @Autowired
@@ -26,6 +28,11 @@ public class ApiServerImpl implements ApiService{
     @Override
     public Api selectApiByApiNameOrUrlMD5(Api api) {
         return apiMapper.selectApiByApiNameOrUrlMD5(api);
+    }
+
+    @Override
+    public List<Api> selectApiByGroupId(Api api) {
+        return apiMapper.selectApiByGroupId(api);
     }
 
     @Override
