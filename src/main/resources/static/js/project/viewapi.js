@@ -28,7 +28,7 @@ var apiSuccess = getApiDetailArea(3);
 var apiFail = getApiDetailArea(4);
 
 function setApiInfo(json){
-    var apiInfoStr = '<ul>';
+    var apiInfoStr = '<ul class="viewAPIUL">';
     apiInfoStr += ('<li><label>Api 名称：</label><span>'+json.apiName+'</span>,所属分组 <b>['+json.groupIdString+']</b>,版本号：<b>'+json.versionNo+'</b></li>');
     apiInfoStr += ('<li><label>Api URL：</label><span>'+json.urlString+'</span> <b><a target="_blank" href="/api'+json.urlString+'">[Visit]</a></b></li>');
     apiInfoStr += ('<li><label>请求方式：</label><b>'+json.methodString+'</b>, Request Content-Type:<b>'+json.requestContentTypeString+'</b>, Response Content-Type:<b>'+json.responseContentTypeString+'</b></li>');
@@ -40,7 +40,7 @@ function setApiInfo(json){
 }
 
 function setHeaderInput(json){
-    var headInfoStr = '<ul>';
+    var headInfoStr = '<ul class="viewAPIUL">';
     headInfoStr += ('<li><label>是否Head入参：</label><b>'+json.inputHeadFlagString+'</b>  <span style="cursor: pointer;"></span> </li>');
     headInfoStr += ('<li><div id="headerParams">');
     var headContent = '<table><thead><th>Key</th><th>入参类型</th><th>单位</th><th>是否必填</th><th>参数样板</th></thead>';
@@ -64,7 +64,7 @@ function setHeaderInput(json){
 function setBodyInput(json){
     var result = {};
     var raw = {};
-    var bodyInfoStr = '<ul>';
+    var bodyInfoStr = '<ul class="viewAPIUL">';
     bodyInfoStr += ('<li><label>是否Body入参：</label><b>'+json.inputBodyFlagString+'</b> 入参方式:<b>'+json.inputBodyTypeString+'</b> <span style="cursor: pointer;"></span> </li>');
     bodyInfoStr += ('<li><div id="bodyParams">');
     if(json.inputBodyType == 2){
@@ -132,6 +132,8 @@ $(document).ready(function(){
 
                 if (json) {
                     //console.log(JSON.stringify(json));
+                    //set panel-title
+                    $('.panel-title').html(' API: ' + json.apiName);
                     //set apiInfo
                     apiInfo.html(setApiInfo(json));
                     //set input header
@@ -145,16 +147,16 @@ $(document).ready(function(){
                         apiInput.append(result.bodyInfoStr);
                     }
 
-                    apiInput.append('<div><label>入参详细描述：</label><div>'+markDownTrans(json.inputTypeDesc)+'</div>');
+                    apiInput.append('<div class="inputDetailDesc"><label>入参详细描述：</label><div>'+markDownTrans(json.inputTypeDesc)+'</div>');
 
-                    var outputSuccess = '<ul>';
+                    var outputSuccess = '<ul class="viewAPIUL">';
                     outputSuccess += ('<li><label>正确出参：</label><div id="jsoneditorSuccess" style="width: 100%; height: 300px;"></div></li>');
                     outputSuccess += ('<li><label>正确出参描述：</label><div>'+markDownTrans(json.outPutDesc)+'</div>');
                     outputSuccess += '</ul>';
                     apiSuccess.html(outputSuccess);
 
 
-                    var outputFail = '<ul>';
+                    var outputFail = '<ul  class="viewAPIUL">';
                     outputFail += ('<li><label>错误出参：</label><div id="jsoneditorFail" style="width: 100%; height: 300px;"></div></li>');
                     outputFail += ('<li><label>错误出参描述：</label><div>'+markDownTrans(json.outPutFailDesc)+'</div>');
                     outputFail += '</ul>';

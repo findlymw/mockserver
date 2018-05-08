@@ -8,19 +8,8 @@
 .messageBoxBError{color:#cc0000;font-size: 16px;}
 .messageBoxBTip{color:#0088CC;font-size: 16px;}
 
-/*
-#apiDetailArea{padding:20px;}
-#apiDetailArea label{
+#apiDetailArea label {
     font-weight: bold;}
-#apiDetailArea span{
-    color: red;}
-#apiDetailArea b{
-    color: #0088CC;}
-#apiDetailArea li{
-    padding:5px;
-    border-bottom: 1px solid #efefef;
-    font-size: 14px;
-}
 #apiDetailArea table{
     width: 100%;
     table-layout:fixed;
@@ -31,9 +20,30 @@
 #apiDetailArea table th{
     border:1px solid #efefef;
     background: #ccc;
+    padding: 5px;
 }
 #apiDetailArea table td{
     border:1px solid #efefef;
     color: #6aa84f;
+    padding: 3px;
 }
-*/
+
+#apiDetailArea  .viewAPIUL li{
+    padding:15px;
+    border-bottom: 1px solid #efefef;
+    font-size: 14px;
+}
+#apiDetailArea .viewAPIUL span{
+
+    font-weight: bold;
+    font-size: 16px;}
+#apiDetailArea .viewAPIUL b{
+    color: #0088CC;}
+.inputDetailDesc{padding: 20px;}
+.inputDetailDesc label{
+    font-weight: bold;
+    font-size: 16px;
+}
+.inputDetailDesc p{
+
+}
