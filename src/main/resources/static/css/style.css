@@ -47,3 +47,12 @@
 .inputDetailDesc p{
 
 }
+
+#addNewApiPanel{
+    font-size: 16px;}
+.addApiForm{margin: 10px;}
+.addApiForm label{display: block;
+    width: 160px;
+    float: left;
+    text-align: right;
+    padding-right: 10px;}

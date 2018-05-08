@@ -40,6 +40,12 @@ public class PageController {
         return "index";
     }
 
+    @RequestMapping("/")
+    public String indexRoot(){
+
+        return "index";
+    }
+
     @RequestMapping("/addapi.html")
     public String addapi(){
 
@@ -50,5 +56,11 @@ public class PageController {
     public String viewapi(@PathVariable long id,Map<String, Object> model){
         model.put("api", id);
         return "viewapi";
+    }
+
+    @RequestMapping("/editapi/{id}.html")
+    public String editapi(@PathVariable long id,Map<String, Object> model){
+        model.put("api", id);
+        return "editapi";
     }
 }

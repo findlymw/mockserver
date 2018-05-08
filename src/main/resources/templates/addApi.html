@@ -2,16 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="inc/header :: head"></head>
 <body class="easyui-layout">
-<style>
-    #addNewApiPanel{
-        font-size: 16px;}
-    .addApiForm{margin: 10px;}
-    .addApiForm label{display: block;
-        width: 140px;
-        float: left;
-        text-align: right;
-        padding-right: 10px;}
-</style>
 <div data-options="region:'north',border:false" style="height:60px;">
     <h1>Mock Server
         <a href="/index.html" class="easyui-linkbutton" data-options="plain:true" iconCls="icon-back">Home</a>
@@ -159,6 +149,7 @@
 </div>
 
 <script type="text/javascript" th:src="@{/js/project/common.js}"></script>
+<script type="text/javascript" th:src="@{/js/project/loadDic.js}"></script>
 <script type="text/javascript" th:src="@{/js/project/addApi.js}"></script>
 <script type="text/javascript" th:src="@{/js/project/saveall.js}"></script>
 </body>

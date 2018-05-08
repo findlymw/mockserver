@@ -53,7 +53,7 @@ function loadApiDataGrid(url){
             {field:'id',title:'Operation',align:'center',
                 formatter: function(id,row,index){
                     var ops = '<a target="_blank" href="/viewapi/'+id+'.html">查看</a> | ';
-                    ops += '<a target="_blank" href="/'+id+'">编辑</a> | ';
+                    ops += '<a target="_blank" href="/editapi/'+id+'.html">编辑</a> | ';
                     ops += '<a onclick="delApi('+id+')">删除</a>';
                     return ops;
                 }
