@@ -21,7 +21,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/mockserverdb?serverTimezone=UTC&characterEncoding=utf-8&useSSL=false
-    username: root
+    username: mock
     password: 123456
   druid:
     initial-size: 2
