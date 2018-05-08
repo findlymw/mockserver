@@ -16,6 +16,95 @@ var simplemdeOutputFail;
 
 var raw = {};
 
+
+
+function getApiDetailArea(id){
+    return $('#apiDetailArea').find('div').eq((id-1));
+}
+
+var apiInfo = getApiDetailArea(1);
+var apiInput = getApiDetailArea(2);
+var apiSuccess = getApiDetailArea(3);
+var apiFail = getApiDetailArea(4);
+
+function setApiInfo(json){
+    var apiInfoStr = '<ul>';
+    apiInfoStr += ('<li><label>Api 名称：</label><span>'+json.apiName+'</span>,所属分组 <b>['+json.groupIdString+']</b>,版本号：<b>'+json.versionNo+'</b></li>');
+    apiInfoStr += ('<li><label>Api URL：</label><span>'+json.urlString+'</span> <b><a target="_blank" href="/api'+json.urlString+'">[Visit]</a></b></li>');
+    apiInfoStr += ('<li><label>请求方式：</label><b>'+json.methodString+'</b>, Request Content-Type:<b>'+json.requestContentTypeString+'</b>, Response Content-Type:<b>'+json.responseContentTypeString+'</b></li>');
+    apiInfoStr += ('<li><label>是否过期：</label><b>'+json.isExpiredString+'</b></li>');
+    apiInfoStr += ('<li><label>前置 API：</label><b>'+json.preAPI+'</b></li>');
+    apiInfoStr += ('<li><label>数据库信息：</label><b>'+json.dbNameAndTableName+'</b></li>');
+    apiInfoStr += '</ul>';
+    return apiInfoStr;
+}
+
+function setHeaderInput(json){
+    var headInfoStr = '<ul>';
+    headInfoStr += ('<li><label>是否Head入参：</label><b>'+json.inputHeadFlagString+'</b>  <span style="cursor: pointer;"></span> </li>');
+    headInfoStr += ('<li><div id="headerParams">');
+    var headContent = '<table><thead><th>Key</th><th>入参类型</th><th>单位</th><th>是否必填</th><th>参数样板</th></thead>';
+    for(var i=0;i<json.inputs.length;i++){
+        var input = json.inputs[i];
+        if(input.hbType == 0){
+            headContent += '<tr><td>'+input.paramName+'</td>';
+            headContent += '<td>'+input.paramTypeString+'</td>';
+            headContent += '<td>'+input.paramUnitString+'</td>';
+            headContent += '<td>'+input.isMustString+'</td>';
+            headContent += '<td>'+input.paramValue+'</td></tr>';
+
+        }
+    }
+    headContent += '</table>';
+    headInfoStr += (headContent + '</div></li>');
+    headInfoStr += '</ul>';
+    return headInfoStr;
+}
+
+function setBodyInput(json){
+    var result = {};
+    var raw = {};
+    var bodyInfoStr = '<ul>';
+    bodyInfoStr += ('<li><label>是否Body入参：</label><b>'+json.inputBodyFlagString+'</b> 入参方式:<b>'+json.inputBodyTypeString+'</b> <span style="cursor: pointer;"></span> </li>');
+    bodyInfoStr += ('<li><div id="bodyParams">');
+    if(json.inputBodyType == 2){
+        bodyInfoStr += '<div id="jsoneditorRaw" style="width: 100%; height: 300px;"></div>';
+        for(var i=0;i<json.inputs.length;i++){
+            var input = json.inputs[i];
+            if(input.hbType == 1){
+                raw = JSON.parse(input.paramValue);
+                break;
+            }
+        }
+    }else{
+        var bodyContent = '<table><thead><th>Key</th><th>入参类型</th><th>单位</th><th>是否必填</th><th>参数样板</th></thead>';
+        for(var i=0;i<json.inputs.length;i++){
+            var input = json.inputs[i];
+            if(input.hbType == 1){
+                bodyContent += '<tr><td>'+input.paramName+'</td>';
+                bodyContent += '<td>'+input.paramTypeString+'</td>';
+                bodyContent += '<td>'+input.paramUnitString+'</td>';
+                bodyContent += '<td>'+input.isMustString+'</td>';
+                bodyContent += '<td>'+input.paramValue+'</td></tr>';
+
+            }
+        }
+        bodyContent += '</tr></table>';
+        bodyInfoStr += bodyContent;
+    }
+
+    bodyInfoStr += ('</div></li></ul>');
+    result.raw = raw;
+    result.bodyInfoStr = bodyInfoStr;
+    return result;
+}
+
+
+function markDownTrans(str){
+    var lexed = marked.lexer(str);
+    return marked.parser(lexed);
+}
+
 var options = {
     //mode: 'view', //只读
     mode: 'code',
@@ -29,9 +118,6 @@ var options = {
 };
 $(document).ready(function(){
     var apiId = $('#apiJson').val();
-    var apiDetail = $('.apiDetail');
-    apiDetail.html('<ul></ul>')
-    var ul = apiDetail.find('ul');
     if(apiId){
         $.ajax({
             type: 'POST',
@@ -46,66 +132,34 @@ $(document).ready(function(){
 
                 if (json) {
                     //console.log(JSON.stringify(json));
-                    ul.append('<li><label>Api 名称：</label><span>'+json.apiName+'</span>,所属分组 <b>['+json.groupIdString+']</b>,版本号：<b>'+json.versionNo+'</b></li>');
-                    ul.append('<li><label>Api URL：</label><span>'+json.urlString+'</span> <b><a target="_blank" href="/api'+json.urlString+'">[Visit]</a></b></li>');
-                    ul.append('<li><label>请求方式：</label><b>'+json.methodString+'</b>, Request Content-Type:<b>'+json.requestContentTypeString+'</b>, Response Content-Type:<b>'+json.responseContentTypeString+'</b></li>');
-                    ul.append('<li><label>是否过期：</label><b>'+json.isExpiredString+'</b></li>');
-                    ul.append('<li><label>前置 API：</label><b>'+json.preAPI+'</b></li>');
-                    ul.append('<li><label>数据库信息：</label><b>'+json.dbNameAndTableName+'</b></li>');
+                    //set apiInfo
+                    apiInfo.html(setApiInfo(json));
+                    //set input header
                     if(json.inputHeadFlag == 1){
-                        ul.append('<li><label>是否Head入参：</label><b>'+json.inputHeadFlagString+'</b>  <span style="cursor: pointer;"><a showFlag="hide" onclick="showParamsDetail(\'headerParams\',this);" >Show</a></span> </li>');
-                        ul.append('<li><div id="headerParams" style="display: none;"></div></li>');
-
-                        var headContent = '<table><thead><th>Key</th><th>入参类型</th><th>单位</th><th>是否必填</th><th>参数样板</th></thead>';
-                        for(var i=0;i<json.inputs.length;i++){
-                            var input = json.inputs[i];
-                            if(input.hbType == 0){
-                                headContent += '<tr><td>'+input.paramName+'</td>';
-                                headContent += '<td>'+input.paramTypeString+'</td>';
-                                headContent += '<td>'+input.paramUnitString+'</td>';
-                                headContent += '<td>'+input.isMustString+'</td>';
-                                headContent += '<td>'+input.paramValue+'</td></tr>';
-
-                            }
-                        }
-                        headContent += '</tr></table>';
-                        $('#headerParams').html('<table><tr><td width="50%">'+headContent+'</td><td></td></tr></table>');
+                        apiInput.html(setHeaderInput(json));
                     }
+
                     if(json.inputBodyFlag == 1){
-                        ul.append('<li><label>是否Body入参：</label><b>'+json.inputBodyFlagString+'</b> 入参方式:<b>'+json.inputBodyTypeString+'</b> <span style="cursor: pointer;"><a showFlag="hide" onclick="showParamsDetail(\'bodyParams\',this);" >Show</a></span> </li>');
-                        ul.append('<li><div id="bodyParams" style="display: none;"></div></li>');
-                        if(json.inputBodyType == 2){
-                            $('#bodyParams').html('<div id="jsoneditorRaw" style="width: 100%; height: 300px;"></div>');
-
-                            for(var i=0;i<json.inputs.length;i++){
-                                var input = json.inputs[i];
-                                if(input.hbType == 1){
-                                    raw = JSON.parse(input.paramValue);
-                                    break;
-                                }
-                            }
-                        }else{
-                            var bodyContent = '<table><thead><th>Key</th><th>入参类型</th><th>单位</th><th>是否必填</th><th>参数样板</th></thead>';
-                            for(var i=0;i<json.inputs.length;i++){
-                                var input = json.inputs[i];
-                                if(input.hbType == 1){
-                                    bodyContent += '<tr><td>'+input.paramName+'</td>';
-                                    bodyContent += '<td>'+input.paramTypeString+'</td>';
-                                    bodyContent += '<td>'+input.paramUnitString+'</td>';
-                                    bodyContent += '<td>'+input.isMustString+'</td>';
-                                    bodyContent += '<td>'+input.paramValue+'</td></tr>';
-
-                                }
-                            }
-                            bodyContent += '</tr></table>';
-                            $('#bodyParams').html('<table><tr><td width="50%">'+bodyContent+'</td><td></td></tr></table>');
-                        }
+                        var result = setBodyInput(json);
+                        raw = result.raw;
+                        apiInput.append(result.bodyInfoStr);
                     }
-                    ul.append('<li><label>入参详细描述：</label><textarea id="inputParamDesc" style="width: 100%;height: 300px;">'+json.inputTypeDesc+'</textarea></li>');
-                    ul.append('<li><label>正确出参：</label><div id="jsoneditorSuccess" style="width: 100%; height: 300px;"></div></li>');
-                    ul.append('<li><label>正确出参描述：</label><textarea id="outPutDesc" style="width: 100%;height: 300px;">'+json.outPutDesc+'</textarea></li>');
-                    ul.append('<li><label>错误出参：</label><div id="jsoneditorFail" style="width: 100%; height: 300px;"></div></li>');
-                    ul.append('<li><label>错误出参描述：</label><textarea id="outPutFailDesc" style="width: 100%;height: 300px;">'+json.outPutFailDesc+'</textarea></li>');
+
+                    apiInput.append('<div><label>入参详细描述：</label><div>'+markDownTrans(json.inputTypeDesc)+'</div>');
+
+                    var outputSuccess = '<ul>';
+                    outputSuccess += ('<li><label>正确出参：</label><div id="jsoneditorSuccess" style="width: 100%; height: 300px;"></div></li>');
+                    outputSuccess += ('<li><label>正确出参描述：</label><div>'+markDownTrans(json.outPutDesc)+'</div>');
+                    outputSuccess += '</ul>';
+                    apiSuccess.html(outputSuccess);
+
+
+                    var outputFail = '<ul>';
+                    outputFail += ('<li><label>错误出参：</label><div id="jsoneditorFail" style="width: 100%; height: 300px;"></div></li>');
+                    outputFail += ('<li><label>错误出参描述：</label><div>'+markDownTrans(json.outPutFailDesc)+'</div>');
+                    outputFail += '</ul>';
+                    apiFail.html(outputFail);
+
 
                     new SimpleMDE({ element: document.getElementById("inputParamDesc") });
                     new SimpleMDE({ element: document.getElementById("outPutDesc") });
