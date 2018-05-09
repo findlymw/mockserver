@@ -21,7 +21,35 @@ $(document).ready(function(){
                     }
                     ajaxLoadEnd();
                 }else {
-                    $.messager.alert('Warning', '<b class="messageBoxBWarning">加载字典数据失败，请刷新页面重试</b>', 'warning');
+                    $.messager.alert('Warning', '<b class="messageBoxBWarning">添加API失败，请刷新页面重试</b>', 'warning');
+                }
+            }
+        });
+    }
+
+    function exeUpdate(obj){
+        obj.id = $('#apiJson').val();
+        console.log(JSON.stringify(obj));
+        $.ajax({
+            type: 'POST',
+            dataType : 'json',
+            cache:false,
+            async:false,
+            contentType: "application/json; charset=utf-8",
+            url: '/restful/updateApi',
+            data: JSON.stringify(obj),
+            beforeSend: ajaxLoading,
+            success: function(json) {
+                console.log(JSON.stringify(json));
+                if (json) {
+                    if(json.success == true){
+                        $.messager.alert('Info', '恭喜，<b class="messageBoxBSuccess">修改成功</b>', 'Info');
+                    }else{
+                        $.messager.alert('Error', 'Sorry，修改失败原因：<b class="messageBoxBError">'+json.desc+'</b>', 'Error');
+                    }
+                    ajaxLoadEnd();
+                }else {
+                    $.messager.alert('Warning', '<b class="messageBoxBWarning">修改API失败，请刷新页面重试</b>', 'warning');
                 }
             }
         });
@@ -51,7 +79,7 @@ $(document).ready(function(){
                     break;
                 }
 
-                if(!param.key){
+                if(!param.key || param.key == ''){
                     result.message.content = 'Sorry,您增加的 <b class="messageBoxBWarning">'+paramType+' 参数key</b> 没有填写，请重新填写。';
                     break;
                 }else if(!param.value){
@@ -105,6 +133,37 @@ $(document).ready(function(){
     }
 
 
+    function updateApi(obj,bodyFlag,headFlag){
+
+        if(bodyFlag == 0 && headFlag == 0){
+            exeUpdate(obj);
+        }else if(bodyFlag == 0 && headFlag == 1){
+            var result = validateParams(obj.headParams,'header');
+            if(result && result.success === true){
+                exeUpdate(obj);
+            }else{
+                $.messager.alert(result.message.title,result.message.content);
+            }
+        }else if(bodyFlag == 1 && (headFlag == 0 || headFlag == 1)){
+            if(obj.inputTypeSelect && obj.inputTypeSelect == '2'){
+                if(obj.bodyRaw && obj.bodyRaw.length > 2){
+                    exeUpdate(obj);
+                }else{
+                    $.messager.alert('Warning','Sorry,您未填写<b class="messageBoxBWarning">【body-raw】，它在【入参】选项卡中</b>，请重新选择并填写。');
+                }
+            }else{
+                var result = validateParams(obj.bodyParams,'body');
+
+                if(result && result.success === true){
+                    exeUpdate(obj);
+                }else{
+                    $.messager.alert(result.message.title,result.message.content);
+                }
+            }
+
+        }
+
+    }
 
     $('.saveall').on('click',function(){
         var obj = new Object();
@@ -143,6 +202,7 @@ $(document).ready(function(){
                     headParam.unit = p.find('select').eq(2).val();
                     headParam.spec = p.find('input').eq(2).val();
                     headParam.desc = p.find('input').eq(3).val();
+                    headParam.id = p.find('input').eq(4).val();
 
 
 
@@ -161,13 +221,14 @@ $(document).ready(function(){
                         var p = $(this);
                         var bodyParam = new Object();
                         bodyParam.key = p.find('input').eq(0).val();
-                        bodyParam.paramType = p.find('select:checked').eq(0).val();
-                        bodyParam.isMust = p.find('select:checked').eq(1).val();
+                        bodyParam.paramType = p.find('select').eq(0).val();
+                        bodyParam.isMust = p.find('select').eq(1).val();
 
                         bodyParam.value = p.find('input').eq(1).val();
                         bodyParam.unit = p.find('select').eq(2).val();
                         bodyParam.spec = p.find('input').eq(2).val();
                         bodyParam.desc = p.find('input').eq(3).val();
+                        bodyParam.id = p.find('input').eq(4).val();
 
 
                         obj.bodyParams.push(bodyParam);
@@ -226,15 +287,32 @@ $(document).ready(function(){
             }else if(!obj.outPutFailDesc){
                 $.messager.alert('Warning','Sorry,您未填写<b class="messageBoxBError">错误出参的字段详细说明</b>，它在<b class="messageBoxBTip">错误出参</b>选项卡中，请重新填写。');
             }else if(obj.headersFlag == '0' && obj.bodyFlag == '0'){
-                exeSave(obj);
+                if(exeType == 'add'){
+                    exeSave(obj);
+                }else if(exeType == 'modify'){
+                    updateApi(obj,0,0);
+                }
+
             }else if(obj.bodyFlag == '0' && obj.headersFlag == '1'){
-               saveHeaderParams(obj);
+                if(exeType == 'add'){
+                    saveHeaderParams(obj);
+                }else if(exeType == 'modify'){
+                    updateApi(obj,0,1);
+                }
             }else if(obj.bodyFlag == '1' && obj.headersFlag == '0'){
-                saveBodyParams(obj);
+                if(exeType == 'add'){
+                    saveBodyParams(obj);
+                }else if(exeType == 'modify'){
+                    updateApi(obj,1,0);
+                }
             }else if(obj.bodyFlag == '1' && obj.headersFlag == '1'){
                 var resultOfHeader = validateParams(obj.headParams,'header');
                 if(resultOfHeader && resultOfHeader.success === true){
-                    saveBodyParams(obj);
+                    if(exeType == 'add'){
+                        saveBodyParams(obj);
+                    }else if(exeType == 'modify'){
+                        updateApi(obj,1,1);
+                    }
                 }else{
                     $.messager.alert(resultOfHeader.message.title,resultOfHeader.message.content);
                 }

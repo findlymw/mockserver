@@ -80,6 +80,83 @@ public class RestfulController {
         return dicCache;
     }
 
+
+    @RequestMapping(value = "/restful/updateApi",method = RequestMethod.POST)
+    public Result updateApi(@RequestBody AddApiInput addApiInput){
+        Result result = new Result();
+        if(null == addApiInput){
+            result.setSuccess(false);
+            result.setDesc("Add Api Input object is null");
+        }else{
+            if(addApiInput.getId() <= 0){
+                result.setSuccess(false);
+                result.setDesc("apiId Failed");
+            }else if(addApiInput.getApiGroup() < 0){
+                result.setSuccess(false);
+                result.setDesc("ApiGroup Failed");
+            }else if(null == addApiInput.getRestful()
+                    || "".equals(addApiInput.getRestful())
+                    ){
+                result.setSuccess(false);
+                result.setDesc("Restful is null");
+            }else if(addApiInput.getReqContentType() < 0){
+                result.setSuccess(false);
+                result.setDesc("ReqContentType Failed");
+            }else if(addApiInput.getRespContentType() < 0){
+                result.setSuccess(false);
+                result.setDesc("RespContentType Failed");
+            }else if(addApiInput.getOutput() == null
+                    || "".equals(addApiInput.getOutput())
+                    || "{}".equals(addApiInput.getOutput())
+                    ){
+                result.setSuccess(false);
+                result.setDesc("Output Failed ,is empty or {} ");
+            }else if(addApiInput.getOutputFail() == null
+                    || "".equals(addApiInput.getOutputFail())
+                    || "{}".equals(addApiInput.getOutputFail())
+                    ){
+                result.setSuccess(false);
+                result.setDesc("OutputFail Failed ,is empty or {} ");
+            }else if(addApiInput.getHeadersFlag() < 0){
+                result.setSuccess(false);
+                result.setDesc("HeadersFlag Failed");
+            }else if(addApiInput.getBodyFlag() < 0){
+                result.setSuccess(false);
+                result.setDesc("BodyFlag Failed");
+            }else{
+
+                //构建Api
+                Api api = new Api();
+                api.setId(addApiInput.getId());
+                api.setGroupId(addApiInput.getApiGroup());
+                api.setUrlString(addApiInput.getRestful());
+                api.setUrlMD5(MD5.parseStrToMd5L32(addApiInput.getRestful()));
+                api.setMethod(addApiInput.getMethod());
+                api.setRequestContentType(addApiInput.getReqContentType());
+                api.setResponseContentType(addApiInput.getRespContentType());
+                api.setOutputData(addApiInput.getOutput());
+                api.setFailData(addApiInput.getOutputFail());
+                api.setInputTypeDesc(addApiInput.getInputParamDesc());
+                api.setOutPutDesc(addApiInput.getOutPutDesc());
+                api.setOutPutFailDesc(addApiInput.getOutPutFailDesc());
+
+                api.setInputHeadFlag(addApiInput.getHeadersFlag());
+                api.setInputBodyFlag(addApiInput.getBodyFlag());
+                api.setInputBodyType(addApiInput.getInputTypeSelect());
+
+                api.setApiName(addApiInput.getApiName());
+                api.setPreAPI(addApiInput.getPreApi());
+                api.setVersionNo(addApiInput.getVersion());
+                api.setDbNameAndTableName(addApiInput.getDbNameTable());
+                api.setIsExpired(addApiInput.getIsExpired());
+
+                result.setSuccess(true);
+                result.setDesc("BodyFlag Failed");
+            }
+        }
+        return result;
+    }
+
     @RequestMapping(value = "/restful/addApi",method = RequestMethod.POST)
     public Result addApi(@RequestBody AddApiInput addApiInput){
         Result result = new Result();

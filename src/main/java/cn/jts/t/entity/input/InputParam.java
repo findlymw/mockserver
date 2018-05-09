@@ -9,6 +9,15 @@ public class InputParam {
     private String spec;
     private String desc;
     private long apiId;
+    private long id;
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public long getApiId() {
         return apiId;

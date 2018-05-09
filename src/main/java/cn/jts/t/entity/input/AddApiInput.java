@@ -1,6 +1,7 @@
 package cn.jts.t.entity.input;
 
 public class AddApiInput {
+    private long id;
     private long apiGroup;
     private String restful;
     private int method;
@@ -27,6 +28,13 @@ public class AddApiInput {
     private String version;
     private String dbNameTable;
 
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getApiName() {
         return apiName;

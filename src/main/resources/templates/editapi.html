@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="inc/header :: head"></head>
+<style>
+    #apiDetailArea table td{
+        color:black;
+    }
+</style>
 <body class="easyui-layout">
 <input type="hidden" id="apiJson" th:value="${api}"/>
 
@@ -62,14 +67,77 @@
                 <span id="dbNameAndTableName"><textarea id="dbNameTable" name="dbNameTable" style="width: 60%;height: 60px;"  placeholder="涉及到的数据与表，以及表字段说明" ></textarea></span>
             </div>
         </div>
-        <div title="入参" style="padding:10px"></div>
-        <div title="正确出参"  style="padding:10px"></div>
-        <div title="错误出参"  style="padding:10px"></div>
+        <div title="入参" style="padding:10px">
+            <table style="width: 100%">
+                <tr>
+                    <td width="80%" style="vertical-align: top;">
+                        <div class="addApiForm" style="border-bottom: 1px solid #efefef;padding: 5px;">
+                            <label>是否有headers类型参数:</label>
+                            <span class="radioSpan">
+                            <input type="radio" disabled="disabled" name="headersFlag" checked="checked" value="0">否</input>
+                                <input disabled="disabled" type="radio" name="headersFlag" value="1">是</input>
+                            </span>
+                            <div id="headersParams"></div>
+                            <div id="addHeadersParamBtn" style="display: none"><a href="javascript:addHeaderParam();" class="easyui-linkbutton" data-options="plain:true" iconCls="icon-add"></a></div>
+                        </div>
+
+                        <div class="addApiForm" style="border-bottom: 1px solid #efefef;padding: 5px;">
+                            <label>是否有Body类型参数:</label>
+                            <span class="radioSpan">
+                    <input type="radio" disabled="disabled" name="bodyFlag" checked="checked" value="0">否</input>
+                                <input disabled="disabled" type="radio" name="bodyFlag" value="1">是</input>
+                </span>
+                            <div id="bodyParamsType" style="margin: 20px;"></div>
+                            <div id="bodyParams"></div>
+                            <div id="addBodyParamBtn" style="display: none"><a href="javascript:addBodyParam();" class="easyui-linkbutton" data-options="plain:true" iconCls="icon-add"></a></div>
+                            <div id="bodyRawParams" style="display: none">
+                                <div id="jsoneditorRaw" style="width: 100%; height: 500px;"></div>
+                            </div>
+                        </div>
+                    </td>
+                    <td style="vertical-align: top;">
+                        <label>参数说明</label><br/>
+                        <textarea id="inputParamDesc" placeholder="输入各类参数的详细说明" style="width: 100%;height: 500px;"></textarea>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div title="正确出参"  style="padding:10px">
+            <table style="width: 100%">
+                <tr>
+                    <td width="80%" style="vertical-align: top;">
+                        <div class="addApiForm">
+                            <div id="jsoneditorSuccess" style="width: 100%; height: 500px;"></div>
+                        </div>
+                    </td>
+                    <td style="vertical-align: top;">
+                        <label>参数说明</label><br/>
+                        <textarea id="outPutDesc" placeholder="输入各类参数的详细说明" style="width: 100%;height: 500px;"></textarea>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div title="错误出参"  style="padding:10px">
+            <table style="width: 100%">
+                <tr>
+                    <td width="80%" style="vertical-align: top;">
+                        <div class="addApiForm">
+                            <div id="jsoneditorFail" style="width: 100%; height: 500px;"></div>
+                        </div>
+                    </td>
+                    <td style="vertical-align: top;">
+                        <label>参数说明</label><br/>
+                        <textarea id="outPutFailDesc" placeholder="输入各类参数的详细说明" style="width: 100%;height: 500px;"></textarea>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
 </div>
 
 <script type="text/javascript" th:src="@{/js/project/common.js}"></script>
 <script type="text/javascript" th:src="@{/js/project/loadDic.js}"></script>
 <script type="text/javascript" th:src="@{/js/project/editapi.js}"></script>
+<script type="text/javascript" th:src="@{/js/project/saveall.js}"></script>
 </body>
 </html>
