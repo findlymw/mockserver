@@ -81,6 +81,22 @@ public class RestfulController {
     }
 
 
+    @RequestMapping(value = "/restful/delapi/{id}",method = RequestMethod.DELETE)
+    public Result delApiById(@PathVariable long id){
+        Result result = new Result();
+        if(id > 0){
+            Api api = new Api();
+            api.setId(id);
+            apiService.deleteApi(api);
+            result.setSuccess(true);
+        }else{
+            result.setSuccess(false);
+            result.setDesc("api id is not exist.");
+        }
+        return result;
+    }
+
+
     @RequestMapping(value = "/restful/updateApi",method = RequestMethod.POST)
     public Result updateApi(@RequestBody AddApiInput addApiInput){
         Result result = new Result();
@@ -372,11 +388,11 @@ public class RestfulController {
     public Result delApiGroup(ApiGroup apiGroup){
         Result result = new Result();
 
-        if(apiGroupService.deleteApiGroupById(apiGroup) == 1){
+        /*if(apiGroupService.deleteApiGroupById(apiGroup) == 1){
             result.setSuccess(true);
         }else{
             result.setSuccess(false);
-        }
+        }*/
         return result;
     }
 

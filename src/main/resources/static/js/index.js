@@ -45,7 +45,30 @@ $('#modifyApiGroupForm').form({
 function delApi(id){
     $.messager.confirm('Confirm','Are you sure you want to delete record?',function(r){
         if (r){
-            $.messager.alert('Info','Sorry, System dose not support delete api.');
+            ///restful/delapi/{id}
+            $.ajax({
+                type: 'DELETE',
+                dataType : 'json',
+                url: '/restful/delapi/'+id,
+                data: {},
+                beforeSend: ajaxLoading,
+                success: function(json){
+                   if(json){
+                       //console.log('delete',JSON.stringify(json));
+                       if(json.success == true){
+                           var row = $('#apidg').datagrid('getSelected');
+                           if (row) {
+                               var rowIndex = $('#apidg').datagrid('getRowIndex', row);
+                               $('#apidg').datagrid('deleteRow', rowIndex);
+                               $('#apidg').datagrid('reload');//删除后重新加载下
+                           }
+                       }else{
+                           $.messager.alert('Warning', '<b class="messageBoxBError">删除API失败，原因：'+json.desc+'</b>', 'warning');
+                       }
+                   }
+                   ajaxLoadEnd();
+                }
+            });
         }
     });
 }
@@ -74,7 +97,7 @@ function loadApiDataGrid(url,text){
                 formatter: function(id,row,index){
                     var ops = '<a target="_blank" href="/viewapi/'+id+'.html">查看</a> | ';
                     ops += '<a target="_blank" href="/editapi/'+id+'.html">编辑</a> | ';
-                    ops += '<a onclick="delApi('+id+')">删除</a>';
+                    ops += '<a href="javascript:delApi('+id+');">删除</a>';
                     return ops;
                 }
             }

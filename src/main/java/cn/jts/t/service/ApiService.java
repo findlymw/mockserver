@@ -12,4 +12,5 @@ public interface ApiService {
     boolean insertAll(Api api, InputParam[] headInputParams,InputParam[] bodyInputParams) throws Exception;
     Api selectApiByGroupMD5(Api api);
     Api selectApiById(Api api);
+    int deleteApi(Api api);
 }

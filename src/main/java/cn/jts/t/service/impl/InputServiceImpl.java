@@ -16,4 +16,9 @@ public class InputServiceImpl implements InputService{
     public List<Input> selectInputByApiId(Api api) {
         return inputMapper.selectInputByApiId(api);
     }
+
+    @Override
+    public int deleteInputByApiId(Input input) {
+        return inputMapper.deleteInputByApiId(input);
+    }
 }

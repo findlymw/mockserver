@@ -1,10 +1,7 @@
 package cn.jts.t.dao;
 
 import cn.jts.t.entity.Api;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.SelectKey;
+import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.mapping.StatementType;
 
 import java.util.List;
@@ -36,4 +33,8 @@ public interface ApiMapper {
 
     @Select("select * from ms_api where id =  #{id}")
     Api selectApiById(Api api);
+
+
+    @Delete("delete from ms_api where id = #{id}")
+    int deleteApi(Api api);
 }

@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface InputService {
     List<Input> selectInputByApiId(Api api);
+    int deleteInputByApiId(Input input);
 }
