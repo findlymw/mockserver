@@ -22,6 +22,26 @@ $('#addApiGroupForm').form({
     //*/
 });
 
+
+$('#modifyApiGroupForm').form({
+    url: '/restful/updateapigroup',
+    success:function(responseData){
+        if(responseData){
+            responseData = JSON.parse(responseData);
+            if(responseData.success === true){
+                $('#modifyApiGroupNameTip').html('<span style="color:green">Successful</span>');
+                $('#easyui-tree-id').tree('reload');
+            }else{
+                $('#modifyApiGroupNameTip').html('<span style="color:red">Failed: '+responseData.desc+'</span>');
+            }
+        }else{
+            //$.messager.alert('Info', data, 'info');
+            $('#modifyApiGroupNameTip').html('<span style="color:red">Api Failed</span>');
+        }
+    }
+    //*/
+});
+
 function delApi(id){
     $.messager.confirm('Confirm','Are you sure you want to delete record?',function(r){
         if (r){
@@ -31,7 +51,7 @@ function delApi(id){
 }
 
 
-function loadApiDataGrid(url){
+function loadApiDataGrid(url,text){
 
     $('#apidg').datagrid({
         url:url,
@@ -61,6 +81,8 @@ function loadApiDataGrid(url){
         ]]
     });
     $('#apidg').datagrid({singleSelect:true});
+    $('.APIGroupArea').find('lable').html('Api Group: '+text);
+    $('.APIGroupArea').show();
 }
 
 
@@ -70,7 +92,13 @@ $(document).ready(function(){
         var selected = tree.tree('getSelected');
         console.log(JSON.stringify(selected));
         var url = '/restful/getApilist/'+selected.id;
-        loadApiDataGrid(url);
+        loadApiDataGrid(url,selected.text);
+        $("#modifyGroupNameId").textbox('setValue',selected.text);
+        $('#apiGroupId').val(selected.id);
+    });
+
+    $('.APIGroupArea').find('a').on('click',function(){
+        $('#modifyApiGroupWin').window('open');
     });
 
     // $.ajax({

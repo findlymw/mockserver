@@ -21,7 +21,9 @@
 <div data-options="region:'south',border:false" style="height:30px;padding:10px;text-align: center;">
     2018 &copy; Mock Server v1.0.0
 </div>
-<div data-options="region:'center',title:'API List'"><table id="apidg"></table></div>
+<div data-options="region:'center',title:'API List'">
+    <div class="APIGroupArea"><lable></lable> <a href="#" class="easyui-linkbutton" data-options="plain:true" iconCls="icon-edit"></a></div>
+    <table id="apidg"></table></div>
 
 
 
@@ -31,6 +33,17 @@
     <form id="addApiGroupForm" method="post" class="easyui-form" data-options="novalidate:true">
         <div style="text-align: center">
             API Group Name: <input class="easyui-textbox" id="addGroupNameId" name="groupName" data-options="required:true" type="text"></input>
+        </div>
+        <div style="text-align: center;margin-top: 3px">
+            <input type="submit" value="Submit"></input>
+        </div>
+    </form>
+</div><div id="modifyApiGroupWin" class="easyui-window" title="Add API Group" closed="true" style="width:300px;height:130px;padding:5px;">
+    <div id="modifyApiGroupNameTip" style="text-align: center;margin-top: 3px"></div>
+    <form id="modifyApiGroupForm" method="post" class="easyui-form" data-options="novalidate:true">
+        <input type="hidden" id="apiGroupId" name="id"/>
+        <div style="text-align: center">
+            Modify Group Name: <input class="easyui-textbox" id="modifyGroupNameId" name="groupName" data-options="required:true" type="text"></input>
         </div>
         <div style="text-align: center;margin-top: 3px">
             <input type="submit" value="Submit"></input>
