@@ -37,4 +37,12 @@ public interface ApiMapper {
 
     @Delete("delete from ms_api where id = #{id}")
     int deleteApi(Api api);
+
+    @Update("update ms_api set groupId = #{groupId},apiName = #{apiName},urlMD5 = #{urlMD5},urlString = #{urlString},"+
+            "method = #{method},outputData = #{outputData},dbNameAndTableName = #{dbNameAndTableName},preAPI = #{preAPI},"+
+            "failData = #{failData},versionNo = #{versionNo},isExpired = #{isExpired},requestContentType = #{requestContentType}"+
+            ",responseContentType = #{responseContentType},inputBodyType = #{inputBodyType},inputBodyFlag = #{inputBodyFlag},"+
+            "inputHeadFlag = #{inputHeadFlag},outPutFailDesc = #{outPutFailDesc},outPutDesc = #{outPutDesc},inputTypeDesc = #{inputTypeDesc}"+
+            " where id = #{id}")
+    int updateById(Api api);
 }

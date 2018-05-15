@@ -66,6 +66,38 @@ public class ApiServerImpl implements ApiService{
 
     }
 
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
+    public int updateById(Api api) throws Exception {
+        //先更新api
+        int count = 0;
+        count += apiMapper.updateById(api);
+        return count;
+    }
+
+    private void updateInputs(Input[] headList) throws Exception {
+        Input _input;
+        for(Input input : headList){
+            //查询是否有这个input
+            _input = inputMapper.selectInputById(input);
+            if(null == _input){
+                inputMapper.insert(input);
+            }else{
+                inputMapper.updateInputById(input);
+            }
+
+        }
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED,isolation = Isolation.DEFAULT,timeout=36000,rollbackFor=Exception.class)
+    public int deleteApiAll(Api api, Input input) {
+        int count = 0;
+        count += apiMapper.deleteApi(api);
+        count += inputMapper.deleteInputByApiId(input);
+        return count;
+    }
+
     //hbType : 0为header参数的类型 1为body参数的类型
     private void setInput(Api api, InputParam[] inputParams,int hbType) throws Exception {
         for(int i=0;i<inputParams.length;i++){

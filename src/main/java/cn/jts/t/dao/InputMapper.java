@@ -2,10 +2,7 @@ package cn.jts.t.dao;
 
 import cn.jts.t.entity.Api;
 import cn.jts.t.entity.Input;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -21,7 +18,13 @@ public interface InputMapper {
     @Select("select * from ms_input where apiId = #{id}")
     List<Input> selectInputByApiId(Api api);
 
+    @Select("select * from ms_input where id = #{id}")
+    Input selectInputById(Input input);
 
     @Delete("delete from ms_input where apiId = #{apiId}")
     int deleteInputByApiId(Input input);
+
+    @Update("update ms_input set hbType = #{hbType},paramName = #{paramName},paramType = #{paramType},paramSpec = #{paramSpec}"+
+    "paramDesc = #{paramDesc},paramUnit = #{paramUnit},paramValue = #{paramValue},isMust = #{isMust} where id = #{id}")
+    int updateInputById(Input input);
 }

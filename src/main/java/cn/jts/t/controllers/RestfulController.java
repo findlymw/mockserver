@@ -98,7 +98,7 @@ public class RestfulController {
 
 
     @RequestMapping(value = "/restful/updateApi",method = RequestMethod.POST)
-    public Result updateApi(@RequestBody AddApiInput addApiInput){
+    public Result updateApi(@RequestBody AddApiInput addApiInput) throws Exception {
         Result result = new Result();
         if(null == addApiInput){
             result.setSuccess(false);
@@ -166,13 +166,25 @@ public class RestfulController {
                 api.setDbNameAndTableName(addApiInput.getDbNameTable());
                 api.setIsExpired(addApiInput.getIsExpired());
 
-                result.setSuccess(true);
-                result.setDesc("BodyFlag Failed");
+                Api _api = apiService.selectApiByApiNameOrUrlMD5(api);
+                if((null != _api && api.getId() == _api.getId()) || null == _api){
+                    apiService.updateById(api);
+                    result.setSuccess(true);
+                }else{
+                    result.setSuccess(false);
+                    result.setDesc("API Name or URL is exist");
+                }
             }
         }
         return result;
     }
 
+    private void deleteInputs(long apiId){
+        Input input = new Input();
+        input.setApiId(apiId);
+        inputService.deleteInputByApiId(input);
+
+    }
     @RequestMapping(value = "/restful/addApi",method = RequestMethod.POST)
     public Result addApi(@RequestBody AddApiInput addApiInput){
         Result result = new Result();

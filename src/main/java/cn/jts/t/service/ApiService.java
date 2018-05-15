@@ -1,6 +1,7 @@
 package cn.jts.t.service;
 
 import cn.jts.t.entity.Api;
+import cn.jts.t.entity.Input;
 import cn.jts.t.entity.input.InputParam;
 
 import java.util.List;
@@ -13,4 +14,6 @@ public interface ApiService {
     Api selectApiByGroupMD5(Api api);
     Api selectApiById(Api api);
     int deleteApi(Api api);
+    int updateById(Api api) throws Exception;
+    int deleteApiAll(Api api,Input input);
 }
